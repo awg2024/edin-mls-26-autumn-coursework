@@ -21,9 +21,10 @@
 #include "asr_kernels.h"
 #include "common.cuh"
 
+// CUDA runs threads in blocks 
 constexpr int ROPE_THREADS = 256;
 
-__global__ void rope_kernel(float* q, float* k, const float* inv_freq, int seq_len,
+__global__ void rope_kernel(float* q, float* k, const float* inv_freq, int seq_len,  // receives query and key tensors and rotates features in 2d
                             int num_q_heads, int num_k_heads, int q_rows, int k_rows,
                             int head_dim, int rotary_dim) {
   const int half = rotary_dim / 2;
@@ -31,32 +32,71 @@ __global__ void rope_kernel(float* q, float* k, const float* inv_freq, int seq_l
   const int k_pairs = k_rows * half;
 
   int idx = 0;  // this thread's pair number, counting q's pairs first, then k's
+  
+
+
   // ======================== BLANK 1.1 =========================
   // Set idx to this thread's global index. Threads without a pair
   // (q_pairs + k_pairs in total) do nothing.
-  // YOUR CODE HERE
+  
+  // Set idx to this thread's global index. 
+  idx = blockIdx.x * blockDim.x + threadIdx.x;
+
+  // threads without pair (q_pairs + k_pairs in total) do nothing to avoid OOM error 
+  if (idx >= q_pairs + k_pairs) return;
   // ============================================================
 
-  float* x = q;               // the tensor this thread works on
+
+  float* x = q;   // the tensor this thread works on, assume q
   int num_heads = num_q_heads;
+
   // ======================== BLANK 1.2 =========================
   // Threads past q's pairs work on k: make x, num_heads and idx describe the
   // tensor this thread works on, with idx counting from 0 inside it.
-  // YOUR CODE HERE
+
+  if (idx >= q_pairs) {
+    x = k;
+    num_heads = num_k_heads;
+    idx -= q_pairs;
+  }
+
   // ============================================================
 
   int row = 0;  // which row (one head of one token) of x
   int i = 0;    // which pair inside that row, 0 .. half-1
   int pos = 0;  // position of the token this row belongs to
+  
   // ======================== BLANK 1.3 =========================
   // Set row, i (the pair inside the row) and pos (the token position of the row).
-  // YOUR CODE HERE
+
+  row = idx / half;  // each row contains half feature pairs 
+
+  i = idx % half; // divide idx by half, whcih feautre pairs is within that row
+
+  pos = (row / num_heads) % seq_len; // what is the token position of the row
+
   // ============================================================
 
   float* v = x + static_cast<size_t>(row) * head_dim;  // start of this row
+
   // ======================== BLANK 1.4 =========================
   // Rotate the pair (v[i], v[i + half]) in place.
-  // YOUR CODE HERE
+
+  float a = v[i]; // define ? what is v? 
+  float b = v[i + half];
+
+  float angle = pos * inv_freq[i]; // calculate dot product to find theta
+
+  float c = cosf(angle); // what cosf? and sinf? 
+  float s = sinf(angle); 
+
+  v[i]        = a * c - b * s;
+  v[i + half] = b * c + a * s;
+
+
+
+
+
   // ============================================================
 }
 
