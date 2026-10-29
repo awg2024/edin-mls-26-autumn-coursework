@@ -13,23 +13,25 @@
 
 // Sum of v over the 32 lanes of a warp. Every lane gets the total.
 __device__ __forceinline__ float warp_reduce_sum(float v) {
-  for (int offset = WARP_SIZE / 2; offset > 0; offset /= 2) {
+  for (int offset = WARP_SIZE / 2; offset > 0; offset /= 2) { // 32, 16, 8, 4, 2, 1 
     // ======================== BLANK 2.1 =========================
     // One step of the butterfly sum (see the guide).
-    // YOUR CODE HERE
+      float other = __shfl_xor_sync(FULL_MASK, v, offset); //  xor shuffle 
+      v += other; // add on v 
+      }
     // ============================================================
-  }
   return v;
 }
 
 // Max of v over the 32 lanes of a warp. Every lane gets the result.
 __device__ __forceinline__ float warp_reduce_max(float v) {
-  for (int offset = WARP_SIZE / 2; offset > 0; offset /= 2) {
+  for (int offset = WARP_SIZE / 2; offset > 0; offset /= 2) { // parallel architecture is same as blank 2.1
     // ======================== BLANK 2.2 =========================
     // The same for the maximum.
-    // YOUR CODE HERE
+      float other = __shfl_xor_sync(FULL_MASK, v, offset);
+      v = fmaxf(v, other); // single precision max funciton 
+      }
     // ============================================================
-  }
   return v;
 }
 
@@ -53,14 +55,21 @@ __device__ __forceinline__ float block_reduce_sum(float v) {
 
 // Max of v over all threads of the block. Every thread gets the result.
 __device__ __forceinline__ float block_reduce_max(float v) {
-  __shared__ float partial[WARP_SIZE];
+  __shared__ float partial[WARP_SIZE]; // shared memory accessible to all warps 
   const int lane = threadIdx.x % WARP_SIZE;
   const int warp = threadIdx.x / WARP_SIZE;
   const int num_warps = blockDim.x / WARP_SIZE;
 
   // ======================== BLANK 2.3 =========================
   // Block-wide maximum, built like block_reduce_sum above.
-  // YOUR CODE HERE
+  
+  v = warp_reduce_max(v);            // utilised built max function per warp  
+  if (lane == 0) partial[warp] = v;  // store one max result per warp
+  __syncthreads(); // ensure all warp threads have been written 
+  
+  v = (lane < num_warps) ? partial[lane] : -INFINITY; // barrier against inactive threads, 0's would be incorrect for max. 
+  v = warp_reduce_max(v); // maxes them again 
+  __syncthreads(); // ensure all warp threads have been written 
   // ============================================================
   return v;
 }
@@ -81,7 +90,15 @@ __device__ __forceinline__ MaxSum maxsum_merge(MaxSum a, MaxSum b) {
   // ======================== BLANK 2.4 =========================
   // Merge a and b with the rule in the guide. Merging two empty summaries
   // ({-INFINITY, 0}) must give an empty summary, not NaN.
-  // YOUR CODE HERE
+
+  if (a.l == 0.0f) return b; // hande empty cases cross-comparision
+  if (b.l == 0.0f) return a;
+
+  r.m = fmaxf(a.m, b.m); // find max score across both gorups 
+  r.l = a.l * expf(a.m - r.m) + b.l * expf(b.m - r.m); // convert to partial exps and then add twogroups 
+    
+
+
   // ============================================================
   return r;
 }
