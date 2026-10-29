@@ -42,7 +42,19 @@ __global__ void rmsnorm_kernel(const float* x, const float* weight, float* y, in
 
   // ======================== BLANK 2.5 =========================
   // RMSNorm of this row: y = x / sqrt(mean(x^2) + eps) * weight.
-  // YOUR CODE HERE
+
+  float sq = 0.0f; // cuda private variable sq, held in register 
+  for (int c = threadIdx.x; c < cols; c += blockDim.x) {
+      float value = xr[c];
+      sq += value * value; } // each thread adds up sum of squared original values 
+
+  float total_sq = block_reduce_sum(sq); // combine partial sums over warps 
+  float inv_rms = rsqrtf(total_sq / cols + eps); // calculate scaling factor using reciprocal , why? do we have a scaling facotr? 
+
+  for (int c = threadIdx.x; c < cols; c += blockDim.x) {
+      yr[c] = xr[c] * inv_rms * weight[c];}
+    
+
   // ============================================================
 }
 
@@ -58,12 +70,36 @@ __global__ void softmax_kernel(const float* x, float* y, int cols) {
   // ======================== BLANK 2.6 =========================
   // Pass 1: set row_max and row_sum (the sum of exp(x - row_max) over the row),
   // reading x only once, with MaxSum.
-  // YOUR CODE HERE
+  
+  MaxSum local = {-INFINITY, 0.0f};
+
+  for (int c = threadIdx.x; c < cols; c += blockDim.x) {
+      MaxSum single = {xr[c], 1.0f};
+      local = maxsum_merge(local, single);
+  }
+
+  // Step 2: Find the maximum across all threads
+  row_max = block_reduce_max(local.m);
+
+  // Step 3: Express each local exponential sum
+  // relative to the global row maximum
+  float scaled_sum = 0.0f;
+
+  if (local.l > 0.0f) {
+      scaled_sum = local.l * expf(local.m - row_max);
+  }
+
+  // Step 4: Sum the rescaled results across the block
+  row_sum = block_reduce_sum(scaled_sum);
   // ============================================================
+
 
   // ======================== BLANK 2.7 =========================
   // Pass 2: y = exp(x - row_max) / row_sum.
-  // YOUR CODE HERE
+  
+  for (int c = threadIdx.x; c < cols; c += blockDim.x) {
+      yr[c] = expf(xr[c] - row_max) / row_sum;}
+
   // ============================================================
 }
 
