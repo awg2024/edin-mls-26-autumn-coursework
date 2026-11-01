@@ -87,10 +87,15 @@ __global__ void rope_kernel(
   float a = v[i]; // reads first component pair 
   float b = v[i + half]; // reads second half of vector 
 
+  // original implementation; 
   float angle = pos * inv_freq[i]; // calculate rotation given position and frequency 
-
   float c = cosf(angle); // calls fast CUDA cos & sin functions 
   float s = sinf(angle); 
+
+  // optimised precompute arrays of rotational angles 
+  //int table_idx = pos * half + i;
+  //float c = cos_table[table_idx];
+  //float s = sin_table[table_idx];
 
   v[i] = a * c - b * s; // computes new rotational angle given vector position
   v[i + half] = b * c + a * s;
@@ -106,8 +111,11 @@ ASR_API int launch_rope(float* q, float* k, const float* inv_freq, int batch, in
   int k_rows = batch * seq_len * num_k_heads;
   int total_pairs = (q_rows + k_rows) * (rotary_dim / 2);
   int blocks = ceil_div(total_pairs, ROPE_THREADS);
+  
+  // one q/k launch 
   rope_kernel<<<blocks, ROPE_THREADS, 0, stream>>>(q, k, inv_freq, seq_len, num_q_heads,
                                                     num_k_heads, q_rows, k_rows, head_dim,
                                                     rotary_dim);
+
   RETURN_LAUNCH_ERROR();
 }
