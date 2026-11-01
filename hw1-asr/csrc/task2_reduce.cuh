@@ -97,8 +97,6 @@ __device__ __forceinline__ MaxSum maxsum_merge(MaxSum a, MaxSum b) {
   r.m = fmaxf(a.m, b.m); // find max score across both gorups 
   r.l = a.l * expf(a.m - r.m) + b.l * expf(b.m - r.m); // convert to partial exps and then add twogroups 
     
-
-
   // ============================================================
   return r;
 }
