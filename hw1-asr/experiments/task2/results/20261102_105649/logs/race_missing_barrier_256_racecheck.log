@@ -1,0 +1,21 @@
+========= COMPUTE-SANITIZER
+========= Error: Race reported between Read access at block_reduce_sum(float)+0x320 in task2_reduce.cuh:53
+=========     and Write access at block_reduce_sum(float)+0x690 in task2_reduce.cuh:49 [160 hazards]
+========= 
+Small cases only, without timing.
+GPU: NVIDIA H200 MIG 1g.18gb (sm_90), 16 SMs, peak memory bandwidth about 563 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08
+rmsnorm, odd cols                    PASS  max_err=3.68e-07
+rmsnorm, text decoder                PASS  max_err=4.35e-07
+layernorm, odd cols (example)        PASS  max_err=3.91e-07
+softmax, one short row               PASS  max_err=1.11e-08
+softmax, odd cols                    PASS  max_err=1.04e-09
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11
+
+Task 2 (reductions): ALL PASS
+========= RACECHECK SUMMARY: 1 hazard displayed (1 error, 0 warnings)
+
+EXIT_CODE=0
