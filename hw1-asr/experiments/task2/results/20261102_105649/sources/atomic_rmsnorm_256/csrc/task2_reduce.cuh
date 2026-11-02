@@ -1,0 +1,106 @@
+// Task 2, part A: reduction building blocks. Read docs/task2-reduce.md first.
+//
+// A reduction turns many numbers into one (a sum, a max, ...). On a GPU we do it
+// in two levels:
+//   1. inside a warp: the 32 lanes swap registers with __shfl_xor_sync, no memory
+//   2. across the warps of a block: each warp leaves one value in shared memory
+//
+// These helpers are used by task2_reduce.cu (RMSNorm, LayerNorm, softmax) and by
+// task4_attention.cu (the online softmax). Every lane of the warp, or every thread
+// of the block, must call them; they all get the result back.
+#pragma once
+#include "common.cuh"
+
+// Sum of v over the 32 lanes of a warp. Every lane gets the total.
+__device__ __forceinline__ float warp_reduce_sum(float v) {
+  for (int offset = WARP_SIZE / 2; offset > 0; offset /= 2) { // 32, 16, 8, 4, 2, 1 
+    // ======================== BLANK 2.1 =========================
+    // One step of the butterfly sum (see the guide).
+      float other = __shfl_xor_sync(FULL_MASK, v, offset); //  xor shuffle 
+      v += other; // add on v 
+      }
+    // ============================================================
+  return v;
+}
+
+// Max of v over the 32 lanes of a warp. Every lane gets the result.
+__device__ __forceinline__ float warp_reduce_max(float v) {
+  for (int offset = WARP_SIZE / 2; offset > 0; offset /= 2) { // parallel architecture is same as blank 2.1
+    // ======================== BLANK 2.2 =========================
+    // The same method for the maximum.
+      float other = __shfl_xor_sync(FULL_MASK, v, offset);
+      v = fmaxf(v, other); // single precision max funciton 
+      }
+    // ============================================================
+  return v;
+}
+
+// Sum of v over all threads of the block. Every thread gets the total.
+// blockDim.x must be a multiple of 32 and at most 1024.
+// (Worked example: block_reduce_max below follows the same four steps.)
+__device__ __forceinline__ float block_reduce_sum(float v) {
+  __shared__ float partial[WARP_SIZE];  // one slot per warp (at most 32 warps)
+  const int lane = threadIdx.x % WARP_SIZE;
+  const int warp = threadIdx.x / WARP_SIZE;
+  const int num_warps = blockDim.x / WARP_SIZE;
+  
+  // following the readme
+  v = warp_reduce_sum(v);            // 1. each warp adds up its own 32 values
+  if (lane == 0) partial[warp] = v;  // 2. lane 0 of each warp stores the warp's sum
+  
+  //    wait until every warp has stored
+  __syncthreads();  // FIRST CALL 
+  v = (lane < num_warps) ? partial[lane] : 0.0f;  // 3. every warp loads all warp sums
+  v = warp_reduce_sum(v);                         //    and adds them up again
+  
+  // reuses partial[]; nobody may write it until all warps have been read
+  __syncthreads();  // SECOND CALL 
+  return v;
+}
+
+// Max of v over all threads of the block. Every thread gets the result.
+__device__ __forceinline__ float block_reduce_max(float v) {
+  __shared__ float partial[WARP_SIZE]; // shared memory accessible to all warps 
+  const int lane = threadIdx.x % WARP_SIZE;
+  const int warp = threadIdx.x / WARP_SIZE;
+  const int num_warps = blockDim.x / WARP_SIZE;
+
+  // ======================== BLANK 2.3 =========================
+  // Block-wide maximum, built like block_reduce_sum above.
+  
+  v = warp_reduce_max(v);            // utilised built max function per warp  
+  if (lane == 0) partial[warp] = v;  // store one max result per warp
+  __syncthreads(); // ensure all warp threads have been written 
+  
+  v = (lane < num_warps) ? partial[lane] : -INFINITY; // barrier against inactive threads, 0's would be incorrect for max. 
+  v = warp_reduce_max(v); // maxes them again 
+  __syncthreads(); // ensure all warp threads have been written 
+  // ============================================================
+  return v;
+}
+
+// Online softmax.
+// A MaxSum summarises a set of numbers x_1..x_n without keeping them:
+//     m = max(x_i)          l = sum(exp(x_i - m))
+// The summary of a single number x is {x, 1}. The empty set is {-INFINITY, 0}.
+// Two summaries can be merged without looking at the numbers again, because
+// exp(x - m_new) = exp(x - m_old) * exp(m_old - m_new).
+struct MaxSum {
+  float m;
+  float l;
+};
+
+__device__ __forceinline__ MaxSum maxsum_merge(MaxSum a, MaxSum b) {
+  MaxSum r = {-INFINITY, 0.0f};
+  // ======================== BLANK 2.4 =========================
+  // Merge a and b with the rule in the guide. Merging two empty summaries
+  // ({-INFINITY, 0}) must give an empty summary, not NaN.
+
+  if (a.l == 0.0f) return b; // hande empty cases cross-comparision
+  if (b.l == 0.0f) return a;
+
+  r.m = fmaxf(a.m, b.m); // find max score across both gorups 
+  r.l = a.l * expf(a.m - r.m) + b.l * expf(b.m - r.m); // convert to partial exps and then add twogroups 
+  // ============================================================
+  return r;
+}

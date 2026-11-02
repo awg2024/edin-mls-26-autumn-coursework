@@ -1,0 +1,67 @@
+variant,threads,case,status,max_err,latency_ms,effective_GBps,pct_peak
+normal_32,32,"rmsnorm, one short row",PASS,8.27e-08,0.002,0.1,0
+normal_32,32,"rmsnorm, odd cols",PASS,3.68e-07,0.012,3.2,1
+normal_32,32,"rmsnorm, text decoder",PASS,3.83e-07,0.023,44.9,8
+normal_32,32,"layernorm, odd cols (example)",PASS,3.91e-07,0.014,2.8,0
+normal_32,32,"layernorm, audio encoder",PASS,5.52e-07,0.093,165.8,29
+normal_32,32,"softmax, one short row",PASS,1.11e-08,0.002,0.0,0
+normal_32,32,"softmax, odd cols",PASS,1.04e-09,0.011,2.1,0
+normal_32,32,"softmax, large inputs (+-100)",PASS,2.67e-08,0.012,1.3,0
+normal_32,32,"softmax, all negative (-200..-150)",PASS,6.11e-09,0.005,1.0,0
+normal_32,32,"softmax, vocabulary row (59264)",PASS,5.23e-10,0.774,0.6,0
+normal_32,32,"softmax, 64 x 4096",PASS,1.13e-09,0.040,52.6,9
+normal_64,64,"rmsnorm, one short row",PASS,8.27e-08,0.002,0.1,0
+normal_64,64,"rmsnorm, odd cols",PASS,3.68e-07,0.007,5.7,1
+normal_64,64,"rmsnorm, text decoder",PASS,4.18e-07,0.013,82.1,15
+normal_64,64,"layernorm, odd cols (example)",PASS,3.91e-07,0.008,4.9,1
+normal_64,64,"layernorm, audio encoder",PASS,5.42e-07,0.057,267.8,48
+normal_64,64,"softmax, one short row",PASS,1.11e-08,0.002,0.0,0
+normal_64,64,"softmax, odd cols",PASS,1.55e-09,0.007,3.7,1
+normal_64,64,"softmax, large inputs (+-100)",PASS,2.67e-08,0.007,2.3,0
+normal_64,64,"softmax, all negative (-200..-150)",PASS,6.11e-09,0.003,1.4,0
+normal_64,64,"softmax, vocabulary row (59264)",PASS,2.80e-10,0.381,1.2,0
+normal_64,64,"softmax, 64 x 4096",PASS,1.12e-09,0.021,99.4,18
+normal_128,128,"rmsnorm, one short row",PASS,8.27e-08,0.002,0.1,0
+normal_128,128,"rmsnorm, odd cols",PASS,3.51e-07,0.005,8.8,2
+normal_128,128,"rmsnorm, text decoder",PASS,4.18e-07,0.008,139.1,25
+normal_128,128,"layernorm, odd cols (example)",PASS,3.91e-07,0.005,7.5,1
+normal_128,128,"layernorm, audio encoder",PASS,5.17e-07,0.057,271.2,48
+normal_128,128,"softmax, one short row",PASS,1.11e-08,0.002,0.0,0
+normal_128,128,"softmax, odd cols",PASS,1.04e-09,0.004,5.5,1
+normal_128,128,"softmax, large inputs (+-100)",PASS,1.89e-08,0.005,3.5,1
+normal_128,128,"softmax, all negative (-200..-150)",PASS,6.11e-09,0.003,1.7,0
+normal_128,128,"softmax, vocabulary row (59264)",PASS,1.35e-10,0.192,2.5,0
+normal_128,128,"softmax, 64 x 4096",PASS,8.85e-10,0.012,170.4,30
+normal_256,256,"rmsnorm, one short row",PASS,8.27e-08,0.002,0.1,0
+normal_256,256,"rmsnorm, odd cols",PASS,3.68e-07,0.003,12.6,2
+normal_256,256,"rmsnorm, text decoder",PASS,4.35e-07,0.005,216.4,38
+normal_256,256,"layernorm, odd cols (example)",PASS,3.91e-07,0.004,11.1,2
+normal_256,256,"layernorm, audio encoder",PASS,5.42e-07,0.059,258.3,46
+normal_256,256,"softmax, one short row",PASS,1.11e-08,0.002,0.0,0
+normal_256,256,"softmax, odd cols",PASS,1.04e-09,0.003,7.3,1
+normal_256,256,"softmax, large inputs (+-100)",PASS,2.67e-08,0.004,4.3,1
+normal_256,256,"softmax, all negative (-200..-150)",PASS,6.11e-09,0.003,1.8,0
+normal_256,256,"softmax, vocabulary row (59264)",PASS,8.13e-11,0.097,4.9,1
+normal_256,256,"softmax, 64 x 4096",PASS,7.95e-10,0.009,236.5,42
+normal_512,512,"rmsnorm, one short row",PASS,8.27e-08,0.002,0.1,0
+normal_512,512,"rmsnorm, odd cols",PASS,3.68e-07,0.003,15.5,3
+normal_512,512,"rmsnorm, text decoder",PASS,4.18e-07,0.004,283.5,50
+normal_512,512,"layernorm, odd cols (example)",PASS,3.91e-07,0.003,13.7,2
+normal_512,512,"layernorm, audio encoder",PASS,5.17e-07,0.075,205.1,36
+normal_512,512,"softmax, one short row",PASS,1.11e-08,0.002,0.0,0
+normal_512,512,"softmax, odd cols",PASS,1.14e-09,0.003,8.9,2
+normal_512,512,"softmax, large inputs (+-100)",PASS,1.95e-08,0.003,5.1,1
+normal_512,512,"softmax, all negative (-200..-150)",PASS,6.11e-09,0.002,2.1,0
+normal_512,512,"softmax, vocabulary row (59264)",PASS,8.13e-11,0.050,9.4,2
+normal_512,512,"softmax, 64 x 4096",PASS,7.95e-10,0.008,254.3,45
+normal_1024,1024,"rmsnorm, one short row",PASS,8.27e-08,0.002,0.1,0
+normal_1024,1024,"rmsnorm, odd cols",PASS,3.68e-07,0.002,16.3,3
+normal_1024,1024,"rmsnorm, text decoder",PASS,3.95e-07,0.005,225.5,40
+normal_1024,1024,"layernorm, odd cols (example)",PASS,3.91e-07,0.003,14.1,2
+normal_1024,1024,"layernorm, audio encoder",PASS,5.62e-07,0.114,134.5,24
+normal_1024,1024,"softmax, one short row",PASS,1.11e-08,0.002,0.0,0
+normal_1024,1024,"softmax, odd cols",PASS,1.04e-09,0.003,8.7,2
+normal_1024,1024,"softmax, large inputs (+-100)",PASS,1.95e-08,0.003,5.5,1
+normal_1024,1024,"softmax, all negative (-200..-150)",PASS,6.11e-09,0.002,2.0,0
+normal_1024,1024,"softmax, vocabulary row (59264)",PASS,4.02e-11,0.029,16.2,3
+normal_1024,1024,"softmax, 64 x 4096",PASS,7.95e-10,0.009,221.6,39
