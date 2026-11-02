@@ -27,7 +27,7 @@ __device__ __forceinline__ float warp_reduce_sum(float v) {
 __device__ __forceinline__ float warp_reduce_max(float v) {
   for (int offset = WARP_SIZE / 2; offset > 0; offset /= 2) { // parallel architecture is same as blank 2.1
     // ======================== BLANK 2.2 =========================
-    // The same for the maximum.
+    // The same method for the maximum.
       float other = __shfl_xor_sync(FULL_MASK, v, offset);
       v = fmaxf(v, other); // single precision max funciton 
       }
@@ -43,13 +43,14 @@ __device__ __forceinline__ float block_reduce_sum(float v) {
   const int lane = threadIdx.x % WARP_SIZE;
   const int warp = threadIdx.x / WARP_SIZE;
   const int num_warps = blockDim.x / WARP_SIZE;
-
+  
+  // following the readme
   v = warp_reduce_sum(v);            // 1. each warp adds up its own 32 values
   if (lane == 0) partial[warp] = v;  // 2. lane 0 of each warp stores the warp's sum
   __syncthreads();                   //    wait until every warp has stored
   v = (lane < num_warps) ? partial[lane] : 0.0f;  // 3. every warp loads all warp sums
   v = warp_reduce_sum(v);                         //    and adds them up again
-  __syncthreads();  // 4. a second call reuses partial[]; nobody may write it until all have read
+  __syncthreads();  // 4. a second call reuses partial[]; nobody may write it until all warps have been read
   return v;
 }
 
@@ -96,7 +97,6 @@ __device__ __forceinline__ MaxSum maxsum_merge(MaxSum a, MaxSum b) {
 
   r.m = fmaxf(a.m, b.m); // find max score across both gorups 
   r.l = a.l * expf(a.m - r.m) + b.l * expf(b.m - r.m); // convert to partial exps and then add twogroups 
-    
   // ============================================================
   return r;
 }
