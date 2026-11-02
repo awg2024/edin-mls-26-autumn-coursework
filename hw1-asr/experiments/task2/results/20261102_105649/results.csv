@@ -1,0 +1,23 @@
+variant,threads,case,status,max_err,latency_ms,effective_GBps,pct_peak
+race_missing_barrier_256,256,"rmsnorm, one short row",PASS,8.27e-08,0.002,0.2,0
+race_missing_barrier_256,256,"rmsnorm, odd cols",PASS,3.68e-07,0.003,12.2,2
+race_missing_barrier_256,256,"rmsnorm, text decoder",PASS,4.35e-07,0.005,216.3,38
+race_missing_barrier_256,256,"layernorm, odd cols (example)",PASS,3.91e-07,0.004,10.6,2
+race_missing_barrier_256,256,"layernorm, audio encoder",PASS,5.42e-07,0.059,259.1,46
+race_missing_barrier_256,256,"softmax, one short row",PASS,1.11e-08,0.002,0.0,0
+race_missing_barrier_256,256,"softmax, odd cols",PASS,1.04e-09,0.003,7.7,1
+race_missing_barrier_256,256,"softmax, large inputs (+-100)",PASS,2.67e-08,0.004,4.5,1
+race_missing_barrier_256,256,"softmax, all negative (-200..-150)",PASS,6.11e-09,0.002,1.9,0
+race_missing_barrier_256,256,"softmax, vocabulary row (59264)",PASS,8.13e-11,0.097,4.9,1
+race_missing_barrier_256,256,"softmax, 64 x 4096",PASS,7.95e-10,0.009,235.0,42
+atomic_rmsnorm_256,256,"rmsnorm, one short row",PASS,8.27e-08,0.004,0.1,0
+atomic_rmsnorm_256,256,"rmsnorm, odd cols",PASS,3.11e-07,0.014,2.9,1
+atomic_rmsnorm_256,256,"rmsnorm, text decoder",PASS,9.73e-07,0.017,62.6,11
+atomic_rmsnorm_256,256,"layernorm, odd cols (example)",PASS,3.91e-07,0.004,10.5,2
+atomic_rmsnorm_256,256,"layernorm, audio encoder",PASS,5.42e-07,0.059,258.3,46
+atomic_rmsnorm_256,256,"softmax, one short row",PASS,1.11e-08,0.002,0.0,0
+atomic_rmsnorm_256,256,"softmax, odd cols",PASS,1.04e-09,0.003,7.0,1
+atomic_rmsnorm_256,256,"softmax, large inputs (+-100)",PASS,2.67e-08,0.004,4.5,1
+atomic_rmsnorm_256,256,"softmax, all negative (-200..-150)",PASS,6.11e-09,0.002,2.0,0
+atomic_rmsnorm_256,256,"softmax, vocabulary row (59264)",PASS,8.13e-11,0.097,4.9,1
+atomic_rmsnorm_256,256,"softmax, 64 x 4096",PASS,7.95e-10,0.009,236.2,42

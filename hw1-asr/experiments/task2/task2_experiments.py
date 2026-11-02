@@ -101,14 +101,12 @@ def main():
                 parse_log(logs / f'{name}_test.log',name,threads,writer)
                 print('  ', 'PASS' if status == 0 else f'FAIL (inspect logs/{name}_test.log)',flush=True)
                 f.flush()
-        
-        if 'race' in args.modes: # deliberately removes critical sync thread barriers that guards shared memory between warps / writes
-            
+        if 'race' in args.modes: # deliberately removes critical sync thread barriers that guards shared memory between warps / writes            
             name = 'race_missing_barrier_256'
             src = copy_sources(work / name)
             header = src / 'task2_reduce.cuh'
             text = header.read_text()
-            needle = '  __syncthreads();  // 4. a second call reuses partial[]; nobody may write it until all have read'
+            needle = '  __syncthreads();  // SECOND CALL'
             substitute_once(header,needle,'  // EXPERIMENT: final barrier deliberately removed',name)
             build = ROOT / 'build' / 'task2_experiments' / name / ('sm_'+gpu_sm)
             print('Running',name,flush=True)
@@ -122,15 +120,11 @@ def main():
                 print('  compute-sanitizer not on PATH; racecheck skipped',flush=True)
             print('  test2 exit:',status,flush=True)
             f.flush()
-        
-        
         if 'atomic' in args.modes: # Compare standard tree reduction performance against shared-memory atomic additions in RMSNorm.
-
             name='atomic_rmsnorm_256'
             src=copy_sources(work/name)
             file=src/'task2_reduce.cu'
             original=file.read_text()
-            
             # Limit replacement to RMSNorm body; never replace LayerNorm reductions.
             start=original.index('__global__ void rmsnorm_kernel(')
             end=original.index('// Softmax over each row',start)
