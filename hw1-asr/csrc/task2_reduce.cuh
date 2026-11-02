@@ -47,10 +47,14 @@ __device__ __forceinline__ float block_reduce_sum(float v) {
   // following the readme
   v = warp_reduce_sum(v);            // 1. each warp adds up its own 32 values
   if (lane == 0) partial[warp] = v;  // 2. lane 0 of each warp stores the warp's sum
-  __syncthreads();                   //    wait until every warp has stored
+  
+  //    wait until every warp has stored
+  __syncthreads();  // FIRST CALL 
   v = (lane < num_warps) ? partial[lane] : 0.0f;  // 3. every warp loads all warp sums
   v = warp_reduce_sum(v);                         //    and adds them up again
-  __syncthreads();  // 4. a second call reuses partial[]; nobody may write it until all warps have been read
+  
+  // reuses partial[]; nobody may write it until all warps have been read
+  __syncthreads();  // SECOND CALL 
   return v;
 }
 
