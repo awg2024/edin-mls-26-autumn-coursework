@@ -1,0 +1,7 @@
+GPU: NVIDIA H200, SMs: 132
+Benchmark: 396 RoPE calls per trial, 7 trials
+Lookup table construction: 0.205408 ms
+fused_compute correctness PASS, max error 1.98848586e-07
+split_compute correctness PASS, max error 1.98848586e-07
+fused_table correctness PASS, max error 1.98848586e-07
+split_table correctness PASS, max error 1.98848586e-07

@@ -1,0 +1,5 @@
+$ git status --short
+
+?? experiments/task1/results/
+
+EXIT_CODE=0

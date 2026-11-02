@@ -1,0 +1,19 @@
+$ make test1
+
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc -c csrc/task1_rope.cu -o build/sm_90/obj/task1_rope.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc -c csrc/task2_reduce.cu -o build/sm_90/obj/task2_reduce.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc -c csrc/task3_gemm.cu -o build/sm_90/obj/task3_gemm.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc -c csrc/task4_attention.cu -o build/sm_90/obj/task4_attention.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc -c csrc/provided.cu -o build/sm_90/obj/provided.o
+nvcc -O3 -std=c++17 -lineinfo -diag-suppress 177 -arch=sm_90 -Xcompiler -fPIC -Icsrc tests/test_task1_rope.cu build/sm_90/obj/task1_rope.o build/sm_90/obj/task2_reduce.o build/sm_90/obj/task3_gemm.o build/sm_90/obj/task4_attention.o build/sm_90/obj/provided.o -o build/sm_90/test_task1_rope -lcublas -Xlinker -rpath -Xlinker /opt/cuda-12.8.0/lib64
+build/sm_90/test_task1_rope
+GPU: NVIDIA H200 (sm_90), 132 SMs, peak memory bandwidth about 4814 GB/s
+
+tiny (2 x 3 tokens, Hq=3, Hk=1)      PASS  max_err=1.03e-07     0.002 ms      0.8 GB/s ( 0% of peak)
+odd sizes, partial rotation          PASS  max_err=1.02e-07     0.003 ms      6.3 GB/s ( 0% of peak)
+audio encoder (partial, 32/64)       PASS  max_err=1.91e-07     0.009 ms   1711.2 GB/s (36% of peak)
+text decoder (GQA 16/4, full)        PASS  max_err=1.73e-07     0.003 ms    482.7 GB/s (10% of peak)
+
+Task 1 (RoPE): ALL PASS
+
+EXIT_CODE=0
