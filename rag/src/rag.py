@@ -4,6 +4,9 @@ import time
 
 
 class RAGPipeline:
+    """
+    Main pipeline
+    """
     def __init__(
         self,
         asr,
@@ -23,17 +26,17 @@ class RAGPipeline:
     def answer_audio(self, audio_path, k: int = 5):
         total_start = time.perf_counter()
 
-        t0 = time.perf_counter()
-        transcript = self.asr.transcribe(audio_path)
-        asr_ms = (time.perf_counter() - t0) * 1000.0
+        t0 = time.perf_counter() # start counter 
+        transcript = self.asr.transcribe(audio_path) # trasnscribe audio path into text string
+        asr_ms = (time.perf_counter() - t0) * 1000.0 # measure latency (ms)
 
         t0 = time.perf_counter()
-        query_vector = self.encoder.encode(transcript)
+        query_vector = self.encoder.encode(transcript) # pass transcript into encoder to create dense embedding vector
         embedding_ms = (time.perf_counter() - t0) * 1000.0
 
-        retrieval = self.retriever.retrieve(query_vector, k=k)
+        retrieval = self.retriever.retrieve(query_vector, k=k) # fetch top k closest documents 
 
-        built = self.context_builder.build(
+        built = self.context_builder.build( # sends build prompt to ELM API 
             transcript,
             retrieval["record_ids"],
             self.data,
@@ -43,7 +46,7 @@ class RAGPipeline:
 
         total_ms = (time.perf_counter() - total_start) * 1000.0
 
-        return {
+        return { # return dict structure with information for end user 
             "transcript": transcript,
             "retrieval": retrieval,
             "contexts": built["contexts"],
