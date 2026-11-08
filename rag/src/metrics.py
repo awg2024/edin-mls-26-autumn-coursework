@@ -1,5 +1,6 @@
-from __future__ import annotations
+# src/metrics.py
 
+from __future__ import annotations
 import math
 
 
@@ -15,6 +16,14 @@ def mrr_at_k(ranked_ids, relevant_ids, k=10): # evaluates the first relevant doc
         if rid in relevant:
             return 1.0 / rank # reciprocal rank (1st, 2nd) weighting 
     return 0.0
+
+
+
+def hit_at_k(ranked_ids, relevant_ids, k): # amount of relevant tokens given the number of tokens we loaded in. 
+    relevant = set(relevant_ids)
+
+    return float(any(rid in relevant for rid in ranked_ids[:k]))
+
 
 
 def ndcg_at_k(ranked_ids, relevance, k=10): # graded relevance 

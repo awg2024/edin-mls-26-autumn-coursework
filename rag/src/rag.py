@@ -36,14 +36,13 @@ class RAGPipeline:
 
         retrieval = self.retriever.retrieve(query_vector, k=k) # fetch top k closest documents 
 
-        built = self.context_builder.build( # sends build prompt to ELM API 
-            transcript,
-            retrieval["record_ids"],
-            self.data,
-        )
+       
+        t0 = time.perf_counter() # start counter before build 
+
+        built = self.context_builder.build(transcript, retrieval["record_ids"], self.data)
+        context_ms = (time.perf_counter() - t0) * 1000.0 # measure build time in ms. 
 
         generation = self.generator.generate(built["prompt"])
-
         total_ms = (time.perf_counter() - total_start) * 1000.0
 
         return { # return dict structure with information for end user 
@@ -56,6 +55,7 @@ class RAGPipeline:
                 "embedding_ms": embedding_ms,
                 "retrieval_ms": retrieval["latency_ms"],
                 "generation_ms": generation["latency_ms"],
+                "context_ms": context_ms, # context build time stored to compare against different retrieval stragies 
                 "end_to_end_ms": total_ms,
             },
         }

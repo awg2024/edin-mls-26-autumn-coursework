@@ -6,7 +6,10 @@ sys.path.insert(0, str(ROOT))
 import argparse
 import json
 from src.asr_adapter import ASRAdapter
+
 from src.context_builder import SimpleContextBuilder
+#from src.context_builder import ExperimentalContextBuilder
+
 from src.data import CourseData
 from src.encoder import LocalEncoder
 from src.generator import ELMGenerator
@@ -31,7 +34,7 @@ def main():
     data = CourseData(data_dir)
     pipeline = RAGPipeline(asr, LocalEncoder(ROOT / "models/enc_a", device=args.device),
         ExactDenseRetriever(data_dir / "embeddings/corpus_enc_a.npy", data_dir / "embeddings/corpus_enc_a_ids.json"),
-        data, SimpleContextBuilder(), ELMGenerator())
+        data, SimpleContextBuilder(), ELMGenerator()) # !! CHANGE FOR TESTING
     items = data.audio_items(args.split)
     if args.limit:
         items = items[:args.limit]
