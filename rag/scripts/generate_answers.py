@@ -1,3 +1,5 @@
+# scripts/generate_answers.py 
+
 """Generate answer candidates using the audio-to-answer baseline."""
 from pathlib import Path
 import sys

@@ -20,10 +20,10 @@ def mrr_at_k(ranked_ids, relevant_ids, k=10): # evaluates the first relevant doc
 
 
 def hit_at_k(ranked_ids, relevant_ids, k): # amount of relevant tokens given the number of tokens we loaded in. 
+    """1 if any relevant document appears in top K, else 0."""
     relevant = set(relevant_ids)
 
     return float(any(rid in relevant for rid in ranked_ids[:k]))
-
 
 
 def ndcg_at_k(ranked_ids, relevance, k=10): # graded relevance 
