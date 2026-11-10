@@ -36,16 +36,18 @@ class RAGPipeline:
 
         retrieval = self.retriever.retrieve(query_vector, k=k) # fetch top k closest documents 
 
-       
-        t0 = time.perf_counter() # start counter before build 
+        t0 = time.perf_counter() # start counter timer before build 
 
         built = self.context_builder.build(transcript, retrieval["record_ids"], self.data)
+
         context_ms = (time.perf_counter() - t0) * 1000.0 # measure build time in ms. 
 
         generation = self.generator.generate(built["prompt"])
         total_ms = (time.perf_counter() - total_start) * 1000.0
 
         return { # return dict structure with information for end user 
+            "prompt": built["prompt"],
+            "selected_evidence": built.get("selected_evidence", []),
             "transcript": transcript,
             "retrieval": retrieval,
             "contexts": built["contexts"],
