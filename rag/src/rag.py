@@ -15,6 +15,7 @@ class RAGPipeline:
         data,
         context_builder,
         generator,
+        reranker=None, # reranking set to none so we can run baseline 
     ):
         self.asr = asr
         self.encoder = encoder
@@ -22,8 +23,9 @@ class RAGPipeline:
         self.data = data
         self.context_builder = context_builder
         self.generator = generator
+        self.reranker = reranker
 
-    def answer_audio(self, audio_path, k: int = 5):
+    def answer_audio(self, audio_path, k: int = 5, final_k: int = 5):
         total_start = time.perf_counter()
 
         t0 = time.perf_counter() # start counter 
@@ -34,14 +36,25 @@ class RAGPipeline:
         query_vector = self.encoder.encode(transcript) # pass transcript into encoder to create dense embedding vector
         embedding_ms = (time.perf_counter() - t0) * 1000.0
 
-        retrieval = self.retriever.retrieve(query_vector, k=k) # fetch top k closest documents 
+        retrieval = self.retriever.retrieve(query_vector, k=k) # dense retreival of top k closest documents  
 
-        t0 = time.perf_counter() # start counter timer before build 
+        final_retrieval = retrieval  # Optional cross-encoder reranking
+        rerank_ms = 0.0
 
-        built = self.context_builder.build(transcript, retrieval["record_ids"], self.data)
+        if self.reranker is not None:  # if reranking is activated ...
+            t0 = time.perf_counter() # start reranking build timer 
 
-        context_ms = (time.perf_counter() - t0) * 1000.0 # measure build time in ms. 
+            final_retrieval = self.reranker.rerank(
+                query=transcript, retrieval=retrieval, data=self.data, final_k=final_k)
 
+            rerank_ms = (time.perf_counter() - t0) * 1000.0 # measure in ms 
+
+        t0 = time.perf_counter() # start context selection timer 
+
+        built = self.context_builder.build(transcript, final_retrieval["record_ids"], self.data) # context_builder set to simple (baseline) or experimental (with different strategies)
+
+        context_ms = (time.perf_counter() - t0) * 1000.0
+                
         generation = self.generator.generate(built["prompt"])
         total_ms = (time.perf_counter() - total_start) * 1000.0
 
@@ -50,6 +63,7 @@ class RAGPipeline:
             "selected_evidence": built.get("selected_evidence", []),
             "transcript": transcript,
             "retrieval": retrieval,
+            "final_retrieval": final_retrieval,  #  if reranking was enabled you can compare 'retrieval' vs 'final_retrieval' did reranking promote a relevant document? 
             "contexts": built["contexts"],
             "answer": generation["answer"],
             "timing": {
@@ -59,5 +73,6 @@ class RAGPipeline:
                 "generation_ms": generation["latency_ms"],
                 "context_ms": context_ms, # context build time stored to compare against different retrieval stragies 
                 "end_to_end_ms": total_ms,
+                "rerank_ms": rerank_ms
             },
         }
