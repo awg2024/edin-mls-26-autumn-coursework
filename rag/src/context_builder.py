@@ -27,6 +27,8 @@ class SimpleContextBuilder:
         }
 
 class ExperimentalContextBuilder:
+    """ Context retrieval strategies of tfidf and mmr detailed below""" 
+    
     def __init__(
         self,
         strategy="tfidf",
@@ -61,14 +63,12 @@ class ExperimentalContextBuilder:
                 transcript,
                 documents,
                 max_chars=self.max_chars,
-                lambda_=self.mmr_lambda,
-            )
+                lambda_=self.mmr_lambda)
 
         # Construct the evidence string.
         evidence = "\n\n".join(
             format_evidence(item)
-            for item in selected
-        )
+            for item in selected)
 
         # Preserve baseline prompt instructions.
         prompt = ( # combine everything into a zero-shot rag system prompt, kept original code the same. 

@@ -1,6 +1,14 @@
 # /src/reranker.py 
-# reranking script 
+
+"""
+This reranking script uses the macro-MiniLM for cross-encoding;;
+https://huggingface.co/cross-encoder/ms-marco-MiniLM-L6-v2/tree/main?utm_source=chatgpt.com
+
+Here the cross-encoder takes the question and the actual text of one document, processes them together through a transformer neural network, and outputs a relevance score.
+"""
+
 import numpy as np
+
 
 class CrossEncoderReranker:
     """
@@ -10,7 +18,7 @@ class CrossEncoderReranker:
     def __init__(
         self,
         model_path, # dict containing the pretrained cross-encoder model
-        device="cpu", # run the model on CPU unless other device is specified (H200?)
+        device="cuda", # run the model on CPU unless other device is specified (H200?)
         batch_size=8, # process up to eight query-document pairs together
         max_length=512): # maximum tokenised input sequence lenght , limitation of this reranking process 
         

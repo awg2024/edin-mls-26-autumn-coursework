@@ -77,7 +77,8 @@ def main():
     # before building the context builder check reranking isn't passed
     reranker = None # init 
     if args.reranker_model is not None:
-        reranker = CrossEncoderReranker(model_path=args.reranker_model, device=args.device or "cpu", batch_size=8)
+        reranker = CrossEncoderReranker(model_path=args.reranker_model,  # expect models/cross_encoder downloaded from hugging face 
+                                        device=args.device or "cpu", batch_size=8)
 
     # RAG pipeline call 
     pipeline = RAGPipeline(asr, LocalEncoder(ROOT / "models/enc_a", device=args.device),
