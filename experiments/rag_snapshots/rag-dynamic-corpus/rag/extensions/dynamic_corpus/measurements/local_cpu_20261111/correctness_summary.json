@@ -1,0 +1,10 @@
+{
+  "query_checkpoint_checks": 4860,
+  "topk_mismatches": 0,
+  "score_mismatches": 0,
+  "logical_state_mismatches": 0,
+  "inactive_or_stale_text_results": 0,
+  "max_score_error": 0.0,
+  "qrels_evaluated_checks": 0,
+  "agreement_fraction": 1.0
+}

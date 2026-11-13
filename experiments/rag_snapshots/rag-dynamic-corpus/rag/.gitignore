@@ -1,0 +1,22 @@
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+.cache/
+.venv/
+venv/
+results/
+*.log
+.pytest_cache/
+*.aux
+*.bbl
+*.blg
+*.out
+*.synctex.gz
+
+# Extracted assets are installed from the repository's LFS archive.
+data/rag_corpus/*
+!data/rag_corpus/README.md
+models/enc_a/*
+!models/enc_a/README.md

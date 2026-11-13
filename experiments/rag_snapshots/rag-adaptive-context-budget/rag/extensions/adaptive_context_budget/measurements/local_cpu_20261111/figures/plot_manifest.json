@@ -1,0 +1,12 @@
+{
+  "generated": [
+    "overhead_vs_candidates"
+  ],
+  "skipped": {
+    "quality_vs_budget": "No course generation/judge run provided",
+    "prompt_tokens_vs_generation_latency": "No course generation/judge run provided",
+    "quality_vs_tokens": "No course generation/judge run provided",
+    "fixed_vs_adaptive": "No course generation/judge run provided",
+    "token_vs_quality_reduction": "No course generation/judge run provided"
+  }
+}

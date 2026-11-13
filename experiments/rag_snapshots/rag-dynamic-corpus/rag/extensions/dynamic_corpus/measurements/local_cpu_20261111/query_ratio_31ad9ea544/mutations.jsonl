@@ -1,0 +1,10 @@
+{"operation": 0, "kind": "insert", "record_id": "fixture-022985", "source_record_id": "fixture-022985"}
+{"operation": 1, "kind": "update", "record_id": "fixture-023797", "source_record_id": "fixture-023797"}
+{"operation": 2, "kind": "insert", "record_id": "fixture-018710", "source_record_id": "fixture-018710"}
+{"operation": 3, "kind": "insert", "record_id": "fixture-013488", "source_record_id": "fixture-013488"}
+{"operation": 4, "kind": "delete", "record_id": "fixture-007313", "source_record_id": null}
+{"operation": 5, "kind": "update", "record_id": "fixture-000058", "source_record_id": "fixture-000058"}
+{"operation": 6, "kind": "delete", "record_id": "fixture-018753", "source_record_id": null}
+{"operation": 7, "kind": "delete", "record_id": "fixture-002641", "source_record_id": null}
+{"operation": 8, "kind": "update", "record_id": "fixture-003481", "source_record_id": "fixture-003481"}
+{"operation": 9, "kind": "insert", "record_id": "fixture-008583", "source_record_id": "fixture-008583"}

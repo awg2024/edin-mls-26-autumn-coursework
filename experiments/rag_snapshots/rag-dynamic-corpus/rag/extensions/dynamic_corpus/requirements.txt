@@ -1,0 +1,3 @@
+# NumPy is already a RAG dependency. Matplotlib is needed only for report plots.
+numpy>=1.24
+matplotlib>=3.6
