@@ -111,7 +111,16 @@ def main():
                     "reranker_enabled": reranker is not None,  # ranking output for testing. 
                     "final_retrieved_record_ids": result["final_retrieval"]["record_ids"],  # state of these if baseline is enabled? 
                     "final_retrieval_scores": result["final_retrieval"]["scores"],
-                    "rerank_ms": result["timing"]["rerank_ms"]}
+                    "rerank_ms": result["timing"]["rerank_ms"],
+                    "final_k": len(result["final_retrieval"]["record_ids"]),
+                    "rerank_k": args.rerank_k if reranker is not None else None,
+                    "reranker_model": str(args.reranker_model) if reranker is not None else None,
+                    "reranker_device": args.reranker_device if reranker is not None else None,
+                    "max_context_chars": (
+                        args.max_context_chars if args.context_strategy != "simple" else None
+                    ),
+                    "mmr_lambda": args.mmr_lambda if args.context_strategy == "mmr" else None,
+                    "context_chars": sum(len(c) for c in result["contexts"])}
  
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
             f.flush()

@@ -95,7 +95,12 @@ def main():
         row["NDCG@10"] = ndcg_at_k(ranked, rel, 10)
         rows.append(row)
         
-        print(f"[{i:>3}/{len(items)}] {qid} R@10={row['Recall@10']:.3f}")
+        display_k = 10 if 10 in args.sweep_k else args.sweep_k[-1]
+
+        print(
+            f"[{i:>3}/{len(items)}] {qid} "
+            f"R@{display_k}={row[f'Recall@{display_k}']:.3f}"
+        )
 
 
     keys = [] # keys dict define 
