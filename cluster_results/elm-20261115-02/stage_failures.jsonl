@@ -1,0 +1,3 @@
+{"stage": "prepare", "error": "prepare_queries exited 2; see /home/s2427231/mls-results/elm-20261115-02/logs/prepare_queries.log"}
+{"stage": "generate", "error": "Configure ELM_API_KEY in /home/s2427231/edin-mls-26-autumn/rag/.env"}
+{"stage": "generate", "error": "Log already exists; use a new run directory or preserve/rename the previous log: /home/s2427231/mls-results/elm-20261115-02/logs/budget_generate.log"}

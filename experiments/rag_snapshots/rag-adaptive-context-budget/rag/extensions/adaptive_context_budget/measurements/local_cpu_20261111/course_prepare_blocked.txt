@@ -1,0 +1,4 @@
+Command: /opt/miniconda3/envs/diss/bin/python -m extensions.adaptive_context_budget prepare --transcript-cache rag/.cache/practice_transcripts.jsonl --output rag/results/budget_snapshots/practice5.jsonl --limit 5
+Exit status: 2
+usage: __main__.py [-h] {prepare,run,summarise,overhead,plot} ...
+__main__.py: error: Missing course inputs (no synthetic replacement): /Users/burphh/Desktop/CS/MLS-CW/rag-adaptive-context-budget/rag/data/rag_corpus/corpus.jsonl, /Users/burphh/Desktop/CS/MLS-CW/rag-adaptive-context-budget/rag/data/rag_corpus/student_audio_manifest.jsonl, /Users/burphh/Desktop/CS/MLS-CW/rag-adaptive-context-budget/rag/data/rag_corpus/embeddings/corpus_enc_a.npy, /Users/burphh/Desktop/CS/MLS-CW/rag-adaptive-context-budget/rag/data/rag_corpus/embeddings/corpus_enc_a_ids.json, rag/.cache/practice_transcripts.jsonl

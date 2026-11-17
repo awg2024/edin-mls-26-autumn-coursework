@@ -1,0 +1,21 @@
+{
+  "split": "practice",
+  "queries": 5,
+  "k": 5,
+  "final_k": 5,
+  "max_context_chars": 5000,
+  "mmr_lambda": 0.7,
+  "selectors": [
+    "simple",
+    "tfidf",
+    "mmr"
+  ],
+  "encoder": "/home/s2427231/edin-mls-26-autumn/rag/models/enc_a",
+  "reranker_model": null,
+  "transcript_cache": "/home/s2427231/mls-results/elm-20261115-02/inputs/practice5_transcripts.jsonl",
+  "transcript_cache_hash": "1300224b48ff07879ebdef3d171fda4cbedd9f793a0c7474bd869904354a36a3",
+  "snapshot_hash": "ec3021f88fa03d906f276d3dc97d75bdcd699f26456a01cbd6d6813174446c87",
+  "git_head": "d0b99ee93fd3c246b621e122bbdc0d14d7cc4efa",
+  "asr_mode": "cached transcripts only; no repeated ASR",
+  "qrels_used_for_preparation": false
+}

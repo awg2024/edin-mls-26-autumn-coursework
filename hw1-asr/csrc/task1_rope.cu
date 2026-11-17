@@ -23,41 +23,78 @@
 
 constexpr int ROPE_THREADS = 256;
 
-__global__ void rope_kernel(float* q, float* k, const float* inv_freq, int seq_len,
-                            int num_q_heads, int num_k_heads, int q_rows, int k_rows,
-                            int head_dim, int rotary_dim) {
+__global__ void rope_kernel(
+  float* q,
+  float* k,
+  const float* inv_freq,
+  int seq_len,
+  int num_q_heads, 
+  int num_k_heads,
+  int q_rows,
+  int k_rows,
+  int head_dim, 
+  int rotary_dim) { 
+
   const int half = rotary_dim / 2;
   const int q_pairs = q_rows * half;
   const int k_pairs = k_rows * half;
 
   int idx = 0;  // this thread's pair number, counting q's pairs first, then k's
+  
   // ======================== BLANK 1.1 =========================
   // Set idx to this thread's global index. Threads without a pair
   // (q_pairs + k_pairs in total) do nothing.
-  // YOUR CODE HERE
+  
+  idx = blockIdx.x * blockDim.x + threadIdx.x;  
+
+  if (idx >= (q_pairs + k_pairs)) return;
   // ============================================================
 
-  float* x = q;               // the tensor this thread works on
+  float* x = q;
   int num_heads = num_q_heads;
+
   // ======================== BLANK 1.2 =========================
   // Threads past q's pairs work on k: make x, num_heads and idx describe the
   // tensor this thread works on, with idx counting from 0 inside it.
-  // YOUR CODE HERE
+
+  if (idx >= q_pairs) {
+    x = k;
+    num_heads = num_k_heads;
+    idx -= q_pairs;
+  }
+
   // ============================================================
 
   int row = 0;  // which row (one head of one token) of x
   int i = 0;    // which pair inside that row, 0 .. half-1
   int pos = 0;  // position of the token this row belongs to
+  
   // ======================== BLANK 1.3 =========================
   // Set row, i (the pair inside the row) and pos (the token position of the row).
-  // YOUR CODE HERE
+
+  row = idx / half;
+  i = idx % half;
+  pos = (row / num_heads) % seq_len;
   // ============================================================
 
-  float* v = x + static_cast<size_t>(row) * head_dim;  // start of this row
+  float* v = x + static_cast<size_t>(row) * head_dim;
+
   // ======================== BLANK 1.4 =========================
   // Rotate the pair (v[i], v[i + half]) in place.
-  // YOUR CODE HERE
+
+  float a = v[i];
+  float b = v[i + half];
+
+  float angle = pos * inv_freq[i];
+  float c = cosf(angle);
+  float s = sinf(angle); 
+
+
+  v[i] = a * c - b * s;
+  v[i + half] = b * c + a * s;
   // ============================================================
+
+
 }
 
 ASR_API int launch_rope(float* q, float* k, const float* inv_freq, int batch, int seq_len,
@@ -67,8 +104,10 @@ ASR_API int launch_rope(float* q, float* k, const float* inv_freq, int batch, in
   int k_rows = batch * seq_len * num_k_heads;
   int total_pairs = (q_rows + k_rows) * (rotary_dim / 2);
   int blocks = ceil_div(total_pairs, ROPE_THREADS);
+  
   rope_kernel<<<blocks, ROPE_THREADS, 0, stream>>>(q, k, inv_freq, seq_len, num_q_heads,
                                                     num_k_heads, q_rows, k_rows, head_dim,
                                                     rotary_dim);
+
   RETURN_LAUNCH_ERROR();
 }

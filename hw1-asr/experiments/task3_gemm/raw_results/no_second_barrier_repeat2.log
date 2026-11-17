@@ -1,0 +1,26 @@
+/tmp/tmp.Fj9cV2olae/no_second_barrier/build/sm_90/test_task3_gemm
+GPU: NVIDIA H200 MIG 3g.71gb (sm_90), 60 SMs, peak memory bandwidth about 2407 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09     0.002 ms        0 GFLOP/s
+    for comparison: naive      0 GFLOP/s, cuBLAS      0 GFLOP/s (CPU reference)
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07     0.003 ms       90 GFLOP/s
+    for comparison: naive     80 GFLOP/s, cuBLAS     41 GFLOP/s (CPU reference)
+odd sizes, bias + GELU               PASS  max_err=7.70e-07     0.004 ms      204 GFLOP/s
+    for comparison: naive    132 GFLOP/s, cuBLAS    155 GFLOP/s (CPU reference)
+decoder q_proj (64x2048x2048)        FAIL  max_err=6.89e-01
+    23484 of 131072 checked values are wrong. First: index 33621, got 1.04732, expected 1.05846
+decoder gate_proj (64x6144x2048)     FAIL  max_err=6.51e-01
+    55356 of 393216 checked values are wrong. First: index 4254, got -2.81237, expected -2.81733
+decoder down_proj (64x2048x6144)     FAIL  max_err=9.99e-01
+    29397 of 131072 checked values are wrong. First: index 33906, got 3.55481, expected 3.49314
+lm_head, last token (1x59264x2048)   FAIL  max_err=6.22e-01
+    14135 of 59264 checked values are wrong. First: index 4156, got 0.499811, expected 0.507685
+encoder q_proj (1500x1280x1280)      FAIL  max_err=6.97e-01
+    371010 of 1920000 checked values are wrong. First: index 21646, got 1.6002, expected 1.71292
+encoder fc1 + GELU (1500x5120x1280)  FAIL  max_err=1.04e+00
+    1381380 of 7680000 checked values are wrong. First: index 3066, got 0.465904, expected 0.365061
+conv2 via im2col (1500x1280x3840)    FAIL  max_err=9.90e-01
+    682133 of 1920000 checked values are wrong. First: index 41434, got 1.50138, expected 1.46891
+
+Task 3 (tiled GEMM): SOME CASES FAILED
+make: *** [Makefile:59: test3] Error 1

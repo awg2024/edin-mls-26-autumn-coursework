@@ -1,0 +1,62 @@
+{
+  "recorded_at_utc": "2026-11-11T12:56:52.971865+00:00",
+  "platform": "macOS-26.5.1-arm64-arm-64bit",
+  "python": "3.11.11 | packaged by conda-forge | (main, Dec  5 2024, 08:47:03) [Clang 18.1.8 ]",
+  "python_executable": "/opt/miniconda3/envs/diss/bin/python",
+  "numpy": "2.4.2",
+  "matplotlib": "3.10.8",
+  "hardware": {
+    "chip": "Apple M4",
+    "model": "Mac16,1",
+    "logical_cores": 10,
+    "performance_cores": 4,
+    "efficiency_cores": 6,
+    "RAM_reported": "16 GB",
+    "source": "system_profiler SPHardwareDataType filtered fields"
+  },
+  "benchmark_thread_limits": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "branch": "feat/rag-dynamic-corpus",
+  "base_commit": "e3ed9eaf0db4da797d6dbeac75dfa75fb52040a4",
+  "source_sha256": {
+    "rag/src/retriever.py": "8d8bfd55cd4ee04a5835da53f9e32dc52e8c0e6ef9cef296cbcf0e796961e5a9",
+    "rag/extensions/dynamic_corpus/__init__.py": "d60334f3a394406dd5c2d320df7cc226f6fefcf94caa3e31552ce761eb08f355",
+    "rag/extensions/dynamic_corpus/__main__.py": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279",
+    "rag/extensions/dynamic_corpus/benchmark.py": "788de99c1269d6ba2e73d71249aa450983e0241dcfed179f30b9b1e60c96ec27",
+    "rag/extensions/dynamic_corpus/cli.py": "a0d141847717725b4a9a61cd81c281f4c7f80f08b7764dcc3a23c4257f047512",
+    "rag/extensions/dynamic_corpus/index.py": "c8b014e5a7a1a15847883b9325dd3d4f95b3083a61d42fbe428220b761a35808",
+    "rag/extensions/dynamic_corpus/io.py": "c1ceb402923116b4862ba7179d275846d29a198ca58c91016456740eb53a554c",
+    "rag/extensions/dynamic_corpus/pipeline.py": "53fba01973bd482acea6ae4b1942b3b8ca04119ec043de13f2ad58bbda8881e2",
+    "rag/extensions/dynamic_corpus/plots.py": "42706602bd96800ba6358a1e3bd9eb4241f0c910146d53c8567c340ee1eea6bb",
+    "rag/extensions/dynamic_corpus/trial.py": "3f34f90195b69fda22ff88cc73b043a5df247ea64e1e98318aceef25cf07cfe5",
+    "rag/extensions/dynamic_corpus/workload.py": "52b36337f226ab6d68ed2ad85a2f09c8db2d2801347a80c483530426fbd48e49",
+    "rag/tests/test_dynamic_corpus.py": "f8d4b7c1748aa2b848e10180620873d5d9345be5f689ee90b1e90234137cf1d4",
+    "rag/tests/test_dynamic_experiments.py": "b3fc041352e025d05e0980f38ee32984f01d4f0d2d72ba962618e1234fec4e7f",
+    "rag/tests/test_dynamic_rag.py": "a36c3be4edbf33a5a82d01e65ead19c22f84c2dccbdc4676b4aec3791be41220"
+  },
+  "resource_availability": {
+    "openai": false,
+    "sentence_transformers": false,
+    "sklearn": true,
+    "numpy": true,
+    "matplotlib": true
+  },
+  "course_assets": {
+    "corpus.jsonl": false,
+    "embeddings/corpus_enc_a.npy": false,
+    "embeddings/corpus_enc_a_ids.json": false,
+    "student_audio_manifest.jsonl": false,
+    "qrels_practice.tsv": false
+  },
+  "rag_env_file_present": false,
+  "api_key_in_process_environment": false,
+  "rag_assets_zip_is_lfs_pointer": true,
+  "course_attempt_exit_code": 2,
+  "benchmark_command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 PYTHONPATH=rag /opt/miniconda3/envs/diss/bin/python -m extensions.dynamic_corpus ablate --dataset synthetic --synthetic-records 24000 --dimension 64 --probes 4 --repeats 3 --output rag/extensions/dynamic_corpus/measurements/local_cpu_20261111 --plot",
+  "benchmark_exit_code": 0,
+  "note": "Synthetic CPU fixtures only. Source hashes describe final files; CLI/trial documentation refinements after timings do not change measured index/scoring/timing paths."
+}

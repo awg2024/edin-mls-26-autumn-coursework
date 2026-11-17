@@ -1,0 +1,19 @@
+﻿mode,operation,backend,calls,total_kernel_ms,kernel_share_pct
+PyTorch reference,linear,torch,2757,328.5,72.3
+PyTorch reference,attention,torch,396,73.4,16.2
+PyTorch reference,rope,torch,396,28.8,6.3
+PyTorch reference,rmsnorm,torch,741,18.8,4.1
+PyTorch reference,silu_mul,torch,364,3.2,0.7
+PyTorch reference,layernorm,torch,65,1.1,0.2
+PyTorch reference,embedding,torch,13,0.3,0.1
+PyTorch reference,softmax,torch,13,0.3,0.1
+PyTorch reference,im2col,torch,2,0.1,0.0
+CUDA all,linear,cuda,2757,1429.1,84.3
+CUDA all,attention,cuda,396,198.6,11.7
+CUDA all,rmsnorm,cuda,741,58.4,3.4
+CUDA all,silu_mul,cuda,364,2.6,0.2
+CUDA all,rope,cuda,396,2.4,0.1
+CUDA all,softmax,cuda,13,1.7,0.1
+CUDA all,layernorm,cuda,65,1.0,0.1
+CUDA all,embedding,cuda,13,0.5,0.0
+CUDA all,im2col,cuda,2,0.1,0.0

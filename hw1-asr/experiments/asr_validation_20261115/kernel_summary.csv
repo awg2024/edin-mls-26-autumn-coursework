@@ -1,0 +1,5 @@
+﻿task,name,status,cases,max_error
+1,RoPE,ALL PASS,4,1.91e-07
+2,reductions,ALL PASS,11,5.42e-07
+3,tiled GEMM,ALL PASS,10,3.53e-05
+4,attention,ALL PASS,8,5.21e-07

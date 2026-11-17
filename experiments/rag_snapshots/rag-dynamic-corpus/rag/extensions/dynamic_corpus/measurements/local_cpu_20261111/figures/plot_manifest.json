@@ -1,0 +1,16 @@
+{
+  "generated": [
+    "update_latency_vs_batch_size",
+    "maintenance_time_comparison",
+    "query_latency_vs_accumulated_updates",
+    "memory_vs_accumulated_updates",
+    "query_latency_vs_compaction_threshold",
+    "workload_time_vs_query_ratio",
+    "maintenance_vs_corpus_size",
+    "exact_topk_agreement",
+    "cumulative_maintenance_cost"
+  ],
+  "skipped": {},
+  "dataset": "synthetic_normalised_vectors",
+  "variability": "sample SD across repeats"
+}

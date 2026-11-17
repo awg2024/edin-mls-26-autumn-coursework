@@ -1,0 +1,1 @@
+Makefile:37: *** No GPU found. Build on a GPU node (srun ...), or name the GPU: make SM=75.  Stop.

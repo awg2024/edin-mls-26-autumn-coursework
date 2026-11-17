@@ -1,0 +1,127 @@
+{
+  "query_ids": [
+    "q_7e9a0f2716c017d2",
+    "q_ea0be00eda6ea088",
+    "q_9cd791a970ab648f",
+    "q_20e98c45013f6cc6",
+    "q_e3f1cef46917a2a5"
+  ],
+  "snapshot_hash": "ec3021f88fa03d906f276d3dc97d75bdcd699f26456a01cbd6d6813174446c87",
+  "conditions": [
+    {
+      "name": "simple_none",
+      "selector": "simple",
+      "policy": null,
+      "packing_policy": "skip",
+      "matched_target_tokens": null
+    },
+    {
+      "name": "tfidf_none",
+      "selector": "tfidf",
+      "policy": null,
+      "packing_policy": "skip",
+      "matched_target_tokens": null
+    },
+    {
+      "name": "mmr_none",
+      "selector": "mmr",
+      "policy": null,
+      "packing_policy": "skip",
+      "matched_target_tokens": null
+    },
+    {
+      "name": "tfidf_fixed_512_skip",
+      "selector": "tfidf",
+      "policy": {
+        "budget": 512
+      },
+      "packing_policy": "skip",
+      "matched_target_tokens": null
+    },
+    {
+      "name": "mmr_fixed_512_skip",
+      "selector": "mmr",
+      "policy": {
+        "budget": 512
+      },
+      "packing_policy": "skip",
+      "matched_target_tokens": null
+    },
+    {
+      "name": "mmr_adaptive_skip",
+      "selector": "mmr",
+      "policy": {
+        "min_budget": 256,
+        "max_budget": 2048,
+        "low_confidence": 0.1,
+        "high_confidence": 0.6,
+        "gamma": 1.0
+      },
+      "packing_policy": "skip",
+      "matched_target_tokens": null
+    },
+    {
+      "name": "mmr_matched_skip",
+      "selector": "mmr",
+      "policy": {
+        "budget": 789
+      },
+      "packing_policy": "skip",
+      "matched_target_tokens": 700.6
+    },
+    {
+      "name": "mmr_fixed_256_skip",
+      "selector": "mmr",
+      "policy": {
+        "budget": 256
+      },
+      "packing_policy": "skip",
+      "matched_target_tokens": null
+    },
+    {
+      "name": "mmr_fixed_1024_skip",
+      "selector": "mmr",
+      "policy": {
+        "budget": 1024
+      },
+      "packing_policy": "skip",
+      "matched_target_tokens": null
+    },
+    {
+      "name": "mmr_fixed_2048_skip",
+      "selector": "mmr",
+      "policy": {
+        "budget": 2048
+      },
+      "packing_policy": "skip",
+      "matched_target_tokens": null
+    }
+  ],
+  "token_counter": "utf8_bytes_div4_estimate",
+  "generation_requested": true,
+  "provenance": {
+    "split": "practice",
+    "queries": 5,
+    "k": 5,
+    "final_k": 5,
+    "max_context_chars": 5000,
+    "mmr_lambda": 0.7,
+    "selectors": [
+      "simple",
+      "tfidf",
+      "mmr"
+    ],
+    "encoder": "/home/s2427231/edin-mls-26-autumn/rag/models/enc_a",
+    "reranker_model": null,
+    "transcript_cache": "/home/s2427231/mls-results/elm-20261115-02/inputs/practice5_transcripts.jsonl",
+    "transcript_cache_hash": "1300224b48ff07879ebdef3d171fda4cbedd9f793a0c7474bd869904354a36a3",
+    "snapshot_hash": "ec3021f88fa03d906f276d3dc97d75bdcd699f26456a01cbd6d6813174446c87",
+    "git_head": "d0b99ee93fd3c246b621e122bbdc0d14d7cc4efa",
+    "asr_mode": "cached transcripts only; no repeated ASR",
+    "qrels_used_for_preparation": false
+  },
+  "generation_model": "utter-project/EuroLLM-22B-Instruct-2512",
+  "generation_temperature": 0.1,
+  "timing_note": "Shared ASR/retrieval/selection cached; reconstructed downstream time is not wall-clock E2E",
+  "matched_budget_note": "Matched on this snapshot's used evidence tokens, without answers/qrels; discrete fit may be imperfect"
+}

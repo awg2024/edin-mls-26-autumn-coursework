@@ -1,0 +1,10 @@
+{"operation": 0, "kind": "insert", "record_id": "r_f876e61e25b3e828", "source_record_id": "r_f876e61e25b3e828"}
+{"operation": 1, "kind": "update", "record_id": "r_fde670efa8012b4e", "source_record_id": "r_fde670efa8012b4e"}
+{"operation": 2, "kind": "insert", "record_id": "r_ba6531bdcfadebbf", "source_record_id": "r_ba6531bdcfadebbf"}
+{"operation": 3, "kind": "insert", "record_id": "r_8636ef24f1dc87bc", "source_record_id": "r_8636ef24f1dc87bc"}
+{"operation": 4, "kind": "delete", "record_id": "r_4c33a9b002075015", "source_record_id": null}
+{"operation": 5, "kind": "update", "record_id": "r_00969f3c37ec6564", "source_record_id": "r_00969f3c37ec6564"}
+{"operation": 6, "kind": "delete", "record_id": "r_c88232dd1fd20197", "source_record_id": null}
+{"operation": 7, "kind": "delete", "record_id": "r_199f7b5fa5f50845", "source_record_id": null}
+{"operation": 8, "kind": "update", "record_id": "r_24deaf16c58314fc", "source_record_id": "r_24deaf16c58314fc"}
+{"operation": 9, "kind": "insert", "record_id": "r_5bb7b9603fb046a8", "source_record_id": "r_5bb7b9603fb046a8"}

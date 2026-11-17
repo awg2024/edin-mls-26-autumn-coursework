@@ -1,0 +1,16 @@
+query_id,selector,estimated_evidence_tokens,units,counter
+q_7e9a0f2716c017d2,simple,1321,5,utf8_bytes_div4_estimate
+q_7e9a0f2716c017d2,tfidf,1064,28,utf8_bytes_div4_estimate
+q_7e9a0f2716c017d2,mmr,1064,28,utf8_bytes_div4_estimate
+q_ea0be00eda6ea088,simple,1187,5,utf8_bytes_div4_estimate
+q_ea0be00eda6ea088,tfidf,1228,28,utf8_bytes_div4_estimate
+q_ea0be00eda6ea088,mmr,1228,28,utf8_bytes_div4_estimate
+q_9cd791a970ab648f,simple,790,5,utf8_bytes_div4_estimate
+q_9cd791a970ab648f,tfidf,399,11,utf8_bytes_div4_estimate
+q_9cd791a970ab648f,mmr,399,11,utf8_bytes_div4_estimate
+q_20e98c45013f6cc6,simple,1601,5,utf8_bytes_div4_estimate
+q_20e98c45013f6cc6,tfidf,1169,27,utf8_bytes_div4_estimate
+q_20e98c45013f6cc6,mmr,1169,27,utf8_bytes_div4_estimate
+q_e3f1cef46917a2a5,simple,1147,5,utf8_bytes_div4_estimate
+q_e3f1cef46917a2a5,tfidf,749,20,utf8_bytes_div4_estimate
+q_e3f1cef46917a2a5,mmr,749,20,utf8_bytes_div4_estimate

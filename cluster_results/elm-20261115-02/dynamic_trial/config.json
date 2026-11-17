@@ -1,0 +1,21 @@
+{
+  "catalog_fingerprint": "8f140c2f4c3b25e6c2b64e0a021970b017c661dbd2cdd2513dfbc764624782df",
+  "seed": 2026,
+  "operations": 20,
+  "k": 10,
+  "final_k": 5,
+  "query_ids": [
+    "q_7e9a0f2716c017d2",
+    "q_ea0be00eda6ea088",
+    "q_9cd791a970ab648f",
+    "q_20e98c45013f6cc6",
+    "q_e3f1cef46917a2a5"
+  ],
+  "query_source": "real_asr_local_enc_a_query_cache",
+  "initial_fraction": 0.8,
+  "update_mode": "refresh; original text/vector pairs",
+  "generator_model": "utter-project/EuroLLM-22B-Instruct-2512",
+  "latency_scope": "Cached real ASR + cached real query encoding; downstream pipeline wall time, not live audio E2E",
+  "generation": "One real generation per unique prompt, shared across matched conditions; cache hits have zero generation_ms",
+  "quality_scope": "Supplied evaluator uses original gold; before/after differ in document availability"
+}

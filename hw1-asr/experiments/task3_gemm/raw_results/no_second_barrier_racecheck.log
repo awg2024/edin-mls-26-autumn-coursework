@@ -1,0 +1,60 @@
+========= COMPUTE-SANITIZER
+========= Error: Race reported between Write access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x3b0 in task3_gemm.cu:46
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x3d0 in task3_gemm.cu:55 [2688 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x3f0 in task3_gemm.cu:55 [2668 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x400 in task3_gemm.cu:55 [2688 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x410 in task3_gemm.cu:55 [2656 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x420 in task3_gemm.cu:55 [2688 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x430 in task3_gemm.cu:55 [2656 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x440 in task3_gemm.cu:55 [2688 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x450 in task3_gemm.cu:55 [2656 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x4b0 in task3_gemm.cu:55 [2688 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x4e0 in task3_gemm.cu:55 [2680 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x500 in task3_gemm.cu:55 [2664 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x520 in task3_gemm.cu:55 [2688 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x540 in task3_gemm.cu:55 [2688 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x570 in task3_gemm.cu:55 [2672 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x580 in task3_gemm.cu:55 [2688 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x590 in task3_gemm.cu:55 [2672 hazards]
+========= 
+========= Warning: Race reported between Write access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x3a0 in task3_gemm.cu:36
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x3e0 in task3_gemm.cu:55 [10752 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x470 in task3_gemm.cu:55 [10752 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x4c0 in task3_gemm.cu:55 [10752 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x560 in task3_gemm.cu:55 [8064 hazards]
+========= 
+========= Error: Race reported between Write access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x3b0 in task3_gemm.cu:46
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x3d0 in task3_gemm.cu:55 [7680 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x3f0 in task3_gemm.cu:55 [7656 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x400 in task3_gemm.cu:55 [7680 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x410 in task3_gemm.cu:55 [7600 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x420 in task3_gemm.cu:55 [7680 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x430 in task3_gemm.cu:55 [7604 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x440 in task3_gemm.cu:55 [7680 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x450 in task3_gemm.cu:55 [7612 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x4b0 in task3_gemm.cu:55 [7680 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x4e0 in task3_gemm.cu:55 [7580 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x500 in task3_gemm.cu:55 [7624 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x520 in task3_gemm.cu:55 [7680 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x540 in task3_gemm.cu:55 [7680 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x570 in task3_gemm.cu:55 [7632 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x580 in task3_gemm.cu:55 [7680 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x590 in task3_gemm.cu:55 [7684 hazards]
+========= 
+========= Warning: Race reported between Write access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x3a0 in task3_gemm.cu:36
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x3e0 in task3_gemm.cu:55 [30720 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x470 in task3_gemm.cu:55 [30720 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x4c0 in task3_gemm.cu:55 [30720 hazards]
+=========     and Read access at linear_tiled_kernel(const float *, const float *, const float *, float *, int, int, int, int)+0x560 in task3_gemm.cu:55 [23040 hazards]
+========= 
+Small cases only, without timing.
+GPU: NVIDIA H200 MIG 3g.71gb (sm_90), 60 SMs, peak memory bandwidth about 2407 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07
+odd sizes, bias + GELU               FAIL  max_err=1.15e-01
+    36 of 3465 checked values are wrong. First: index 175, got 0.0635026, expected 0.134847
+
+Task 3 (tiled GEMM): SOME CASES FAILED
+========= Target application returned an error
+========= RACECHECK SUMMARY: 4 hazards displayed (2 errors, 2 warnings)

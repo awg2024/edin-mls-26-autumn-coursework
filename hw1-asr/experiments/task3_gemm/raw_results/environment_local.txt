@@ -1,0 +1,9 @@
+Host: macOS-26.5.1-arm64-arm-64bit-Mach-O
+Architecture: arm64
+make: /usr/bin/make
+nvcc: unavailable in PATH
+nvidia-smi: unavailable in PATH
+compute-sanitizer: unavailable in PATH
+CUDA GPU: unavailable on this macOS ARM64 host
+CUDA toolkit version: unavailable (nvcc not installed)
+These are environment/build-attempt records, not benchmark measurements.

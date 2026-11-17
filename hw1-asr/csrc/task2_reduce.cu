@@ -42,7 +42,18 @@ __global__ void rmsnorm_kernel(const float* x, const float* weight, float* y, in
 
   // ======================== BLANK 2.5 =========================
   // RMSNorm of this row: y = x / sqrt(mean(x^2) + eps) * weight.
-  // YOUR CODE HERE
+
+  float sq = 0.0f;
+  for (int c = threadIdx.x; c < cols; c += blockDim.x) {
+
+      float value = xr[c];
+      sq += value * value; }
+
+  float total_sq = block_reduce_sum(sq);
+  float inv_rms = rsqrtf(total_sq / cols + eps);
+
+  for (int c = threadIdx.x; c < cols; c += blockDim.x) {
+      yr[c] = xr[c] * inv_rms * weight[c];}
   // ============================================================
 }
 
@@ -58,12 +69,32 @@ __global__ void softmax_kernel(const float* x, float* y, int cols) {
   // ======================== BLANK 2.6 =========================
   // Pass 1: set row_max and row_sum (the sum of exp(x - row_max) over the row),
   // reading x only once, with MaxSum.
-  // YOUR CODE HERE
+  
+  MaxSum local = {-INFINITY, 0.0f};
+
+  for (int c = threadIdx.x; c < cols; c += blockDim.x) {
+      MaxSum single = {xr[c], 1.0f};
+      local = maxsum_merge(local, single);
+  }
+
+  row_max = block_reduce_max(local.m);
+
+  float scaled_sum = 0.0f;
+
+  if (local.l > 0.0f) { 
+      scaled_sum = local.l * expf(local.m - row_max); // calculate scaled sum with local relative to own lcocal max 
+  }
+
+  row_sum = block_reduce_sum(scaled_sum);
   // ============================================================
+
 
   // ======================== BLANK 2.7 =========================
   // Pass 2: y = exp(x - row_max) / row_sum.
-  // YOUR CODE HERE
+  
+  for (int c = threadIdx.x; c < cols; c += blockDim.x) {
+      yr[c] = expf(xr[c] - row_max) / row_sum;}
+
   // ============================================================
 }
 

@@ -1,0 +1,31 @@
+{
+  "course_corpus": {
+    "path": "rag/data/rag_corpus/corpus.jsonl",
+    "present": false
+  },
+  "audio_manifest": {
+    "path": "rag/data/rag_corpus/student_audio_manifest.jsonl",
+    "present": false
+  },
+  "corpus_embeddings": {
+    "path": "rag/data/rag_corpus/embeddings/corpus_enc_a.npy",
+    "present": false
+  },
+  "encoder_weights": {
+    "path": "rag/models/enc_a/model.safetensors",
+    "present": false
+  },
+  "practice_transcript_cache": {
+    "path": "rag/.cache/practice_transcripts.jsonl",
+    "present": false
+  },
+  "rag_env_file": {
+    "path": "rag/.env",
+    "present": false
+  },
+  "archive_bytes": 134,
+  "elm_credential_in_process_environment": false,
+  "openai_sdk_available": false,
+  "real_generation_calls_made": 0,
+  "real_judge_calls_made": 0
+}

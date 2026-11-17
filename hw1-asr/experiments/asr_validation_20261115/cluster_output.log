@@ -1,0 +1,120 @@
+[saxa]s2427231: make test 2>&1 | tee validation_tests.log
+GPU: NVIDIA H200 MIG 3g.71gb (sm_90), 60 SMs, peak memory bandwidth about 2407 GB/s
+
+tiny (2 x 3 tokens, Hq=3, Hk=1)      PASS  max_err=1.03e-07     0.002 ms      0.8 GB/s ( 0% of peak)
+odd sizes, partial rotation          PASS  max_err=1.02e-07     0.002 ms      8.3 GB/s ( 0% of peak)
+audio encoder (partial, 32/64)       PASS  max_err=1.91e-07     0.015 ms   1004.5 GB/s (42% of peak)
+text decoder (GQA 16/4, full)        PASS  max_err=1.73e-07     0.003 ms    409.8 GB/s (17% of peak)
+
+Task 1 (RoPE): ALL PASS
+GPU: NVIDIA H200 MIG 3g.71gb (sm_90), 60 SMs, peak memory bandwidth about 2407 GB/s
+
+rmsnorm, one short row               PASS  max_err=8.27e-08     0.002 ms      0.2 GB/s ( 0% of peak)
+rmsnorm, odd cols                    PASS  max_err=3.68e-07     0.003 ms     12.7 GB/s ( 1% of peak)
+rmsnorm, text decoder                PASS  max_err=4.35e-07     0.005 ms    230.4 GB/s (10% of peak)
+layernorm, odd cols (example)        PASS  max_err=3.91e-07     0.004 ms     11.2 GB/s ( 0% of peak)
+layernorm, audio encoder             PASS  max_err=5.42e-07     0.013 ms   1178.1 GB/s (49% of peak)
+softmax, one short row               PASS  max_err=1.11e-08     0.002 ms      0.0 GB/s ( 0% of peak)
+softmax, odd cols                    PASS  max_err=1.04e-09     0.003 ms      7.6 GB/s ( 0% of peak)
+softmax, large inputs (+-100)        PASS  max_err=2.67e-08     0.004 ms      4.5 GB/s ( 0% of peak)
+softmax, all negative (-200..-150)   PASS  max_err=6.11e-09     0.002 ms      2.0 GB/s ( 0% of peak)
+softmax, vocabulary row (59264)      PASS  max_err=8.13e-11     0.096 ms      4.9 GB/s ( 0% of peak)
+softmax, 64 x 4096                   PASS  max_err=7.95e-10     0.007 ms    290.6 GB/s (12% of peak)
+
+Task 2 (reductions): ALL PASS
+GPU: NVIDIA H200 MIG 3g.71gb (sm_90), 60 SMs, peak memory bandwidth about 2407 GB/s
+
+tiny 3 x 5, K = 7                    PASS  max_err=9.76e-09     0.002 ms        0 GFLOP/s
+    for comparison: naive      0 GFLOP/s, cuBLAS      0 GFLOP/s (CPU reference)
+odd sizes 37 x 100, K = 33, bias     PASS  max_err=1.55e-07     0.003 ms       94 GFLOP/s
+    for comparison: naive     76 GFLOP/s, cuBLAS     43 GFLOP/s (CPU reference)
+odd sizes, bias + GELU               PASS  max_err=7.70e-07     0.005 ms      197 GFLOP/s
+    for comparison: naive    133 GFLOP/s, cuBLAS    153 GFLOP/s (CPU reference)
+decoder q_proj (64x2048x2048)        PASS  max_err=1.05e-05     0.173 ms     3098 GFLOP/s
+    for comparison: naive    396 GFLOP/s, cuBLAS  14168 GFLOP/s (cuBLAS reference)
+decoder gate_proj (64x6144x2048)     PASS  max_err=1.14e-05     0.501 ms     3215 GFLOP/s
+    for comparison: naive    408 GFLOP/s, cuBLAS  15961 GFLOP/s (cuBLAS reference)
+decoder down_proj (64x2048x6144)     PASS  max_err=3.53e-05     0.574 ms     2806 GFLOP/s
+    for comparison: naive    386 GFLOP/s, cuBLAS  17731 GFLOP/s (cuBLAS reference)
+lm_head, last token (1x59264x2048)   PASS  max_err=1.24e-05     1.110 ms      219 GFLOP/s
+    for comparison: naive    211 GFLOP/s, cuBLAS   1132 GFLOP/s (cuBLAS reference)
+encoder q_proj (1500x1280x1280)      PASS  max_err=9.66e-06     1.423 ms     3455 GFLOP/s
+    for comparison: naive    414 GFLOP/s, cuBLAS  21014 GFLOP/s (cuBLAS reference)
+encoder fc1 + GELU (1500x5120x1280)  PASS  max_err=6.92e-07     5.600 ms     3511 GFLOP/s
+    for comparison: naive    416 GFLOP/s, cuBLAS  23081 GFLOP/s (cuBLAS reference)
+conv2 via im2col (1500x1280x3840)    PASS  max_err=2.74e-05     4.282 ms     3443 GFLOP/s
+    for comparison: naive    416 GFLOP/s, cuBLAS  22569 GFLOP/s (cuBLAS reference)
+
+Task 3 (tiled GEMM): ALL PASS
+GPU: NVIDIA H200 MIG 3g.71gb (sm_90), 60 SMs, peak memory bandwidth about 2407 GB/s
+
+tiny, one tile (4 queries, 5 keys)   PASS  max_err=1.11e-07     0.005 ms        1 GFLOP/s
+several tiles, peaky scores          PASS  max_err=4.97e-07     0.014 ms       16 GFLOP/s
+GQA 4 heads / 2 kv heads             PASS  max_err=1.30e-07     0.007 ms       86 GFLOP/s
+causal, seq_q = seq_k                PASS  max_err=4.86e-07     0.028 ms       90 GFLOP/s
+causal, 5 new queries, 37 keys       PASS  max_err=1.78e-07     0.008 ms       24 GFLOP/s
+causal, one new query                PASS  max_err=3.39e-07     0.028 ms       21 GFLOP/s
+text decoder (GQA 16/4, causal)      PASS  max_err=5.21e-07     0.027 ms      633 GFLOP/s
+audio encoder (20 heads, 1500)       PASS  max_err=2.68e-07     5.773 ms     1995 GFLOP/s
+
+Task 4 (attention): ALL PASS
+[saxa]s2427231: ./run.sh --cuda none --profile 2>&1 | tee validation_pytorch.log
+./run.sh --cuda all --profile 2>&1 | tee validation_cuda_all.log
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+GPU: NVIDIA H200 MIG 3g.71gb (sm_90)
+Kernels: rope=torch  reduce=torch  gemm=torch  attention=torch  provided=torch
+Loading the model (about 9 GB of float32 weights)...
+Loaded in 20.1 s
+Audio: 3.50 s, mel features (1, 128, 3000), prompt 59 tokens
+  run 1:    416.4 ms  (13 tokens)
+  run 2:    417.2 ms  (13 tokens)
+  run 3:    423.4 ms  (13 tokens)
+
+GPU time per operation, one transcription (454.5 ms in kernels):
+  operation    runs on    calls   total ms   share
+  linear       torch       2757      328.5   72.3%
+  attention    torch        396       73.4   16.2%
+  rope         torch        396       28.8    6.3%
+  rmsnorm      torch        741       18.8    4.1%
+  silu_mul     torch        364        3.2    0.7%
+  layernorm    torch         65        1.1    0.2%
+  embedding    torch         13        0.3    0.1%
+  softmax      torch         13        0.3    0.1%
+  im2col       torch          2        0.1    0.0%
+
+Time: 419.0 ms per transcription (+/- 3.1 ms), 32.2 ms per token
+Peak GPU memory: 8.90 GiB
+Transcription: Concord returned to its place amidst the tents.
+Expected:      Concord returned to its place amidst the tents
+Accuracy: 100.0%
+Status: PASS
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+GPU: NVIDIA H200 MIG 3g.71gb (sm_90)
+Kernels: rope=cuda  reduce=cuda  gemm=cuda  attention=cuda  provided=cuda
+Library: /home/s2427231/edin-mls-26-autumn/hw1-asr/build/sm_90/libasr_kernels.so
+Loading the model (about 9 GB of float32 weights)...
+Loaded in 15.9 s
+Audio: 3.50 s, mel features (1, 128, 3000), prompt 59 tokens
+  run 1:   1638.0 ms  (13 tokens)
+  run 2:   1638.3 ms  (13 tokens)
+  run 3:   1638.1 ms  (13 tokens)
+
+GPU time per operation, one transcription (1694.4 ms in kernels):
+  operation    runs on    calls   total ms   share
+  linear       cuda        2757     1429.1   84.3%
+  attention    cuda         396      198.6   11.7%
+  rmsnorm      cuda         741       58.4    3.4%
+  silu_mul     cuda         364        2.6    0.2%
+  rope         cuda         396        2.4    0.1%
+  softmax      cuda          13        1.7    0.1%
+  layernorm    cuda          65        1.0    0.1%
+  embedding    cuda          13        0.5    0.0%
+  im2col       cuda           2        0.1    0.0%
+
+Time: 1638.2 ms per transcription (+/- 0.1 ms), 126.0 ms per token
+Peak GPU memory: 8.56 GiB
+Transcription: Concord returned to its place amidst the tents.
+Expected:      Concord returned to its place amidst the tents
+Accuracy: 100.0%
+Status: PASS
+[saxa]s2427231: 
