@@ -1,0 +1,12 @@
+{
+  "generated": [
+    "quality_vs_budget",
+    "prompt_tokens_vs_generation_latency",
+    "quality_vs_tokens",
+    "fixed_vs_adaptive",
+    "token_vs_quality_reduction"
+  ],
+  "skipped": {
+    "overhead_vs_candidates": "No measured overhead CSV provided"
+  }
+}

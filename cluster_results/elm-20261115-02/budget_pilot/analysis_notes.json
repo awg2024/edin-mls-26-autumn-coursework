@@ -1,0 +1,7 @@
+{
+  "quality_missing": false,
+  "confidence_interval": "2000-resample paired-query percentile bootstrap, seed=2026; unavailable for n<2",
+  "coverage": "Both full planned-query and actually evaluated paired-query counts are reported",
+  "qrels_limitation": "Document-level relevance cannot establish that a selected sentence answers the question",
+  "token_limit": "Bound applies to selected counter; default is a four-UTF8-bytes-per-token estimate, not API tokenization"
+}

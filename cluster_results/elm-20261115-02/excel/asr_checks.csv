@@ -1,0 +1,8 @@
+﻿check,status,cases,failed_cases,max_error
+Clean build,NOT RECORDED,,,
+Task 1,PASS,4,0,1.91e-07
+Task 2,PASS,11,0,5.42e-07
+Task 3,PASS,10,0,3.53e-05
+Task 4,PASS,8,0,5.21e-07
+Model none,PASS,,,
+Model all,PASS,,,

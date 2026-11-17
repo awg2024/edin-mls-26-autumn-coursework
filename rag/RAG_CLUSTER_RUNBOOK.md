@@ -1,5 +1,10 @@
 # Run both RAG experiments on the university cluster
 
+For full Task 1–4 validation plus automatic Markdown summaries and Excel CSVs,
+use [the cluster validation guide](../tools/cluster/README.md). It copies the
+current local code directly into the existing cluster checkout and runs the two
+independent RAG runtimes. The older manual procedure below remains available.
+
 Run these sections in order. Commands marked **Mac** run in your local terminal;
 the others run over SSH on the cluster. Stop at a failed command and retain its
 log before continuing. This first trial uses the same five practice queries.
@@ -90,7 +95,9 @@ if [ ! -f "$HOME/mls-rag-env/bin/activate" ]; then
 fi
 source "$HOME/mls-rag-env/bin/activate"
 
-python -m pip install \
+python -m pip install --no-cache-dir "torch==2.10.0" \
+  --index-url https://download.pytorch.org/whl/cpu
+python -m pip install --no-cache-dir "torch==2.10.0+cpu" \
   -r experiments/rag_cluster/adaptive_context_budget/rag/requirements.txt \
   -r experiments/rag_cluster/adaptive_context_budget/rag/extensions/adaptive_context_budget/requirements-experiments.txt \
   -r experiments/rag_cluster/dynamic_corpus/rag/extensions/dynamic_corpus/requirements.txt

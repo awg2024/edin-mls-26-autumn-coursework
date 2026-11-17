@@ -1,0 +1,3 @@
+﻿mode,status,transcription_mean_ms,transcription_sd_ms,ms_per_token,peak_allocated_GiB,expected_word_set_coverage_pct,transcription,CUDA_all_speedup_vs_PyTorch
+none,PASS,419.0,3.1,32.2,8.9,100.0,Concord returned to its place amidst the tents.,0.25576852643144915
+all,PASS,1638.2,0.1,126.0,8.56,100.0,Concord returned to its place amidst the tents.,0.25576852643144915

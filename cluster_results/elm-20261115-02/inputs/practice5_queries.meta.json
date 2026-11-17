@@ -1,0 +1,21 @@
+{
+  "source": "real_asr_local_enc_a_query_cache",
+  "embedding_space": "enc_a",
+  "split": "practice",
+  "transcripts": [
+    "Understanding sales tax implications when purchasing items in a retail store.",
+    "Factors influencing the initial stock price at market opening.",
+    "Timeline for fund availability when depositing credit card payments.",
+    "Interpreting a negative price-to-earnings ratio for stocks.",
+    "Process for adding an additional vehicle to an existing auto insurance policy with GICO."
+  ],
+  "audio_files": [
+    "audio/practice/q_7e9a0f2716c017d2.wav",
+    "audio/practice/q_ea0be00eda6ea088.wav",
+    "audio/practice/q_9cd791a970ab648f.wav",
+    "audio/practice/q_20e98c45013f6cc6.wav",
+    "audio/practice/q_e3f1cef46917a2a5.wav"
+  ],
+  "encoder_model": "/home/s2427231/edin-mls-26-autumn/rag/models/enc_a",
+  "transcript_cache": "/home/s2427231/mls-results/elm-20261115-02/inputs/practice5_transcripts.jsonl"
+}

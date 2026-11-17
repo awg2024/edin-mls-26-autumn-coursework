@@ -1,0 +1,3 @@
+﻿mode,status,mean_transcription_ms,stddev_transcription_ms,ms_per_token,peak_allocated_GPU_GiB,expected_word_set_coverage_pct,model_load_seconds,transcription
+PyTorch reference,PASS,419.0,3.1,32.2,8.9,100.0,20.1,Concord returned to its place amidst the tents.
+CUDA all,PASS,1638.2,0.1,126.0,8.56,100.0,15.9,Concord returned to its place amidst the tents.

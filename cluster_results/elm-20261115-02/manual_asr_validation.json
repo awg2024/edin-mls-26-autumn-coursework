@@ -1,0 +1,11 @@
+{
+  "sources": {
+    "/home/s2427231/edin-mls-26-autumn/hw1-asr/validation_tests.log": "64e0da73853b5d9c29361af2aa4daf758ead08d9db5a24310f796f18bd7ff2d5",
+    "/home/s2427231/edin-mls-26-autumn/hw1-asr/validation_pytorch.log": "c0b2001a64f11a1047c12b97ae52d8cc2c004040fc71211f2859e31bbe9363d4",
+    "/home/s2427231/edin-mls-26-autumn/hw1-asr/validation_cuda_all.log": "ec87d90f464fee657bd08f353837315e30bbc976480d978032bbf962f0afe052"
+  },
+  "validation": "Recorded ALL PASS/PASS markers and kernel configuration checked; no ASR tests rerun",
+  "shell_exit_codes": "not recorded in manual logs",
+  "clean_build": "not recorded in imported logs",
+  "historical_execution_source_hash": "not recorded; source_sha256.json identifies current experiment code"
+}

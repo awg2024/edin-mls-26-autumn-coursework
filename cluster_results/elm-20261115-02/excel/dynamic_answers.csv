@@ -1,0 +1,5 @@
+﻿condition,queries,generation_cache_hits,judged_queries,retrieval_ms_mean,downstream_pipeline_wall_ms_mean,correctness_mean,grounding_mean,completeness_mean,normalised_answer_score_mean,uncached_generation_ms_mean
+original_static,5,0,5,9.179584588855505,4559.3763138051145,1.2,1.0,0.8,0.25,4549.837751395535
+dynamic_before,5,1,5,17.73534019012004,3411.7281791986898,1.4,1.0,1.0,0.2833333333333333,4242.22050125536
+dynamic_after,5,5,5,8.349958795588464,8.522390387952328,1.4,1.0,1.0,0.2833333333333333,
+freshly_rebuilt_after,5,5,5,7.737829384859651,7.911934785079211,1.4,1.0,1.0,0.2833333333333333,

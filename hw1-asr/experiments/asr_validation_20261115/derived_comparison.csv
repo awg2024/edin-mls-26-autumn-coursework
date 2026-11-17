@@ -1,0 +1,2 @@
+﻿CUDA_speedup_vs_PyTorch,CUDA_slowdown_vs_PyTorch,CUDA_peak_allocated_memory_reduction_GiB
+0.25576852643144915,3.909785202863962,0.33999999999999986
