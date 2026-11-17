@@ -11,17 +11,17 @@ class SimpleContextBuilder:
         contexts = [data.record_text(rid) for rid in record_ids]
 
         evidence = "\n\n".join(
-            f"[Document {i}]\n{text}" # indexes each FULL document from start to finish for each (k)
+            f"[Document {i}]\n{text}"
             for i, text in enumerate(contexts, start=1)
         )
 
-        prompt = ( # combine everything into a zero-shot rag system prompt 
+        prompt = (
             "Answer the question using the retrieved evidence below. "
             "If the evidence is insufficient, say so.\n\n"
             f"Question:\n{transcript}\n\n"
             f"Evidence:\n{evidence}")
 
-        return { # return value from the ELM API call 
+        return {
             "contexts": contexts,
             "prompt": prompt,
         }
@@ -31,7 +31,7 @@ class ExperimentalContextBuilder:
         self,
         strategy="tfidf",
         max_chars=5000,
-        mmr_lambda=0.7): # hard coded values for context builder. 
+        mmr_lambda=0.7):
 
 
         if strategy not in ("tfidf", "mmr"):
@@ -46,17 +46,16 @@ class ExperimentalContextBuilder:
 
     def build(self, transcript, record_ids, data):
         
-        documents = [{"record_id": rid, "text": data.record_text(rid)} for rid in record_ids] # extract record id and text from the document 
+        documents = [{"record_id": rid, "text": data.record_text(rid)} for rid in record_ids]
 
-        # Select the algorithm using an argument.
-        if self.strategy == "tfidf": # specified tfidf function call 
+        if self.strategy == "tfidf":
             selected = select_tfidf(
                 transcript,
                 documents,
                 max_chars=self.max_chars,
             )
 
-        elif self.strategy == "mmr": # specified mmr function call 
+        elif self.strategy == "mmr":
             selected = select_mmr(
                 transcript,
                 documents,
@@ -64,21 +63,20 @@ class ExperimentalContextBuilder:
                 lambda_=self.mmr_lambda,
             )
 
-        # Construct the evidence string.
         evidence = "\n\n".join(
             format_evidence(item)
             for item in selected
         )
 
         # Preserve baseline prompt instructions.
-        prompt = ( # combine everything into a zero-shot rag system prompt, kept original code the same. 
+        prompt = (
             "Answer the question using the retrieved evidence below. "
             "If the evidence is insufficient, say so.\n\n"
             f"Question:\n{transcript}\n\n"
             f"Evidence:\n{evidence}"
         )
 
-        return { # return value from the ELM API call 
+        return {
             "contexts": [
                 item["text"] for item in selected
             ],

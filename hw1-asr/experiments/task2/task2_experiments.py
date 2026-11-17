@@ -17,12 +17,11 @@ import subprocess
 import sys
 
 ROOT = Path.cwd()
-ORIGINAL = ROOT / 'csrc' # root dir 
-TEST = ROOT / 'experiments' / 'task2' # test root dir 
+ORIGINAL = ROOT / 'csrc'
+TEST = ROOT / 'experiments' / 'task2'
 
 
 
-# execute helepr 
 def execute(command, log):
     with log.open('w') as f:
         p = subprocess.run(command, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT, text=True)
@@ -32,7 +31,7 @@ def execute(command, log):
 
 def copy_sources(folder):
     target = folder / 'csrc'
-    shutil.copytree(ORIGINAL, target) # dir helper 
+    shutil.copytree(ORIGINAL, target)
     return target
 
 
@@ -53,7 +52,7 @@ def build_and_test(src, build, logs, prefix, small=False):
     return status
 
 
-def parse_log(path, variant, threads, writer): # helper function for read out of csv 
+def parse_log(path, variant, threads, writer):
     for line in path.read_text(errors='replace').splitlines():
         match = re.match(r'^\s*(rmsnorm|layernorm|softmax),\s*(.*?)\s+(PASS|FAIL)\s+max_err=([\deE+.-]+)(?:\s+([\d.]+)\s+ms\s+([\d.]+)\s+GB/s\s+\(\s*(\d+)% of peak\))?', line)
         if match:
@@ -63,11 +62,11 @@ def parse_log(path, variant, threads, writer): # helper function for read out of
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--modes', nargs='+', choices=['sweep','race','atomic'], default=['sweep','race','atomic']) # different experiment alteraations we are applying 
-    parser.add_argument('--sizes', nargs='+', type=int, default=[32,64,128,256,512,1024]) # REDUCE_thread configurations we are applying 
+    parser.add_argument('--modes', nargs='+', choices=['sweep','race','atomic'], default=['sweep','race','atomic'])
+    parser.add_argument('--sizes', nargs='+', type=int, default=[32,64,128,256,512,1024])
     args = parser.parse_args()
     
-    if not (ROOT / 'Makefile').exists() or not (ORIGINAL / 'task2_reduce.cu').exists(): # checker if task2 reduce exsits 
+    if not (ROOT / 'Makefile').exists() or not (ORIGINAL / 'task2_reduce.cu').exists():
         sys.exit('Run this script from the hw1-asr directory.')
 
 
@@ -84,11 +83,11 @@ def main():
     csvpath = out / 'results.csv'
     
      
-    with csvpath.open('w',newline='') as f: # logs saving for report writeup 
+    with csvpath.open('w',newline='') as f:
         writer = csv.writer(f)
         writer.writerow(['variant','threads','case','status','max_err','latency_ms','effective_GBps','pct_peak'])
         
-        if 'sweep' in args.modes: # Benchmark performance across different REDUCE thread block sizes seeing the performance 
+        if 'sweep' in args.modes:
             for threads in args.sizes:
                 if threads < 32 or threads > 1024 or threads % 32:
                     raise ValueError('Threads must be a multiple of 32, between 32 and 1024')

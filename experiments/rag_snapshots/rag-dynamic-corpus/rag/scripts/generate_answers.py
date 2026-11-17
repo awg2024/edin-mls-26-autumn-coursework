@@ -1,4 +1,3 @@
-# scripts/generate_answers.py 
 
 """Generate answer candidates using the audio-to-answer baseline."""
 from pathlib import Path
@@ -27,25 +26,21 @@ def main():
     ap.add_argument("--device", default=None)
     ap.add_argument("--limit", type=int, default=None, help="Diagnostic subset only")
     
-    # add in argparse options for experimental context builder 
     ap.add_argument("--context-strategy",choices=["simple", "tfidf", "mmr"],default="simple",help="Context construction algorithm")
     ap.add_argument("--max-context-chars",type=int,default=5000,help="Maximum evidence characters for experimental strategies")
-    ap.add_argument("--mmr-lambda",type=float,default=0.7,help="MMR relevance/diversity trade-off")  # defining lmbda for mmr 
+    ap.add_argument("--mmr-lambda",type=float,default=0.7,help="MMR relevance/diversity trade-off")
 
-    # add in argparse options for reranking 
     ap.add_argument("--reranker-model", type=Path, default=None, help="Path to a locally available cross-encoder model")
     ap.add_argument("--rerank-k", type=int, default=5, help="Number of documents kept after reranking")
 
     args = ap.parse_args()
 
-    # validation of experimental context builder after parsing 
-    if args.max_context_chars < 1:  # validation for experimental context builder 
+    if args.max_context_chars < 1:
         ap.error("--max-context-chars must be positive")
 
     if not 0 <= args.mmr_lambda <= 1:
         ap.error("--mmr-lambda must be between 0 and 1")
 
-    # validation of the reranking option after parsing  
     if args.rerank_k < 1 or args.k < 1 or (args.limit is not None and args.limit < 1):
         ap.error("rank-r, --k and --limit must be positive")
 
@@ -64,25 +59,22 @@ def main():
     data_dir = ROOT / "data/rag_corpus"
     data = CourseData(data_dir)
 
-    # before creating the RAG pipeline check the context builder passing 
-    if args.context_strategy == "simple": # enable context builder to handle simple (baseline) 
+    if args.context_strategy == "simple":
         context_builder = SimpleContextBuilder()
     else:
-        context_builder = ExperimentalContextBuilder( # enable context builder to handle experimental context builder 
+        context_builder = ExperimentalContextBuilder(
             strategy=args.context_strategy,
             max_chars=args.max_context_chars,
             mmr_lambda=args.mmr_lambda)
 
 
-    # before building the context builder check reranking isn't passed
-    reranker = None # init 
+    reranker = None
     if args.reranker_model is not None:
         reranker = CrossEncoderReranker(model_path=args.reranker_model, device=args.device or "cpu", batch_size=8)
 
-    # RAG pipeline call 
     pipeline = RAGPipeline(asr, LocalEncoder(ROOT / "models/enc_a", device=args.device),
         ExactDenseRetriever(data_dir / "embeddings/corpus_enc_a.npy", data_dir / "embeddings/corpus_enc_a_ids.json"),
-        data, context_builder, ELMGenerator(), reranker=reranker)  # context_builder imbedded in RAG pipeline call 
+        data, context_builder, ELMGenerator(), reranker=reranker)
     
 
 
@@ -100,15 +92,15 @@ def main():
                      "answer": result["answer"],
                    "retrieved_record_ids": result["retrieval"]["record_ids"], 
                    "timing": result["timing"],
-                   "retrieval_scores": result["retrieval"]["scores"],  #  update output row for experimental deocder 
+                   "retrieval_scores": result["retrieval"]["scores"],
                     "context_strategy": args.context_strategy,
                     "k": args.k,
                     "contexts": result["contexts"],
                     "prompt": result["prompt"],
                     "selected_evidence": result["selected_evidence"],
                     "candidate_k": args.k,
-                    "reranker_enabled": reranker is not None,  # ranking output for testing. 
-                    "final_retrieved_record_ids": result["final_retrieval"]["record_ids"],  # state of these if baseline is enabled? 
+                    "reranker_enabled": reranker is not None,
+                    "final_retrieved_record_ids": result["final_retrieval"]["record_ids"],
                     "final_retrieval_scores": result["final_retrieval"]["scores"],
                     "rerank_ms": result["timing"]["rerank_ms"]}
  

@@ -1,14 +1,12 @@
-# scripts/retrieval_depth_sweep.py
 
 from time import perf_counter
 from src.metrics import recall_at_k, hit_at_k
 
-K_VALUES = [1, 5, 10, 20, 30, 40, 50] # k sweep for cosine similarity  
+K_VALUES = [1, 5, 10, 20, 30, 40, 50]
 
 
 def evaluate_query(query_id, transcript,encoder,retriever,qrels):
     
-    # Ground-truth relevant document IDs from eval  
     relevant_ids = set(qrels.get(query_id, {}))
 
     # Encode the transcript once
@@ -24,7 +22,6 @@ def evaluate_query(query_id, transcript,encoder,retriever,qrels):
 
     for k in K_VALUES:
         
-        # Only use the first K ranked documents
         top_k_ids = ranked_ids[:k]
 
         rows.append({

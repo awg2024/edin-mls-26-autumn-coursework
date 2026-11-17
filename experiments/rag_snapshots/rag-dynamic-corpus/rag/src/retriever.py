@@ -50,16 +50,16 @@ class ExactDenseRetriever:
     """Transparent exact cosine-similarity baseline over precomputed corpus vectors."""
 
     def __init__(self, embeddings_path: str | Path, ids_path: str | Path):
-        self.embeddings = np.load(embeddings_path) # load precomputed document embeddings 
-        self.record_ids = json.loads(Path(ids_path).read_text(encoding="utf-8")) # load corresponding document IDs (for origin corpus lookup)
+        self.embeddings = np.load(embeddings_path)
+        self.record_ids = json.loads(Path(ids_path).read_text(encoding="utf-8"))
 
         if len(self.record_ids) != self.embeddings.shape[0]:
             raise ValueError("embedding row count does not match ID list")
 
-        self.embeddings = np.asarray(self.embeddings, dtype=np.float32) # ensure embeddings use a float32 value
+        self.embeddings = np.asarray(self.embeddings, dtype=np.float32)
 
         norms = np.linalg.norm(self.embeddings, axis=1)
-        if not np.allclose(norms, 1.0, atol=1e-4): # embeddings should have been regularized, with len=1
+        if not np.allclose(norms, 1.0, atol=1e-4):
             raise ValueError("corpus embeddings are expected to be L2-normalised")
 
     @classmethod
@@ -80,7 +80,7 @@ class ExactDenseRetriever:
         instance.reproducible = reproducible
         return instance
 
-    def retrieve(self, query_vector: np.ndarray, k: int = 5): # default depth retreival is 5. 
+    def retrieve(self, query_vector: np.ndarray, k: int = 5):
         if type(k) is not int or k < 1:
             raise ValueError("k must be a positive integer") 
         q = normalise_query(query_vector, self.embeddings.shape[1])
@@ -93,7 +93,7 @@ class ExactDenseRetriever:
         elapsed_ms = (time.perf_counter() - start) * 1000.0
 
         return {
-            "record_ids": [self.record_ids[int(i)] for i in idx], # which documents were retrieved?
-            "scores": [float(scores[int(i)]) for i in idx], # their correspodning similarity scores
-            "latency_ms": elapsed_ms, # how long retrieval took 
+            "record_ids": [self.record_ids[int(i)] for i in idx],
+            "scores": [float(scores[int(i)]) for i in idx],
+            "latency_ms": elapsed_ms,
         }

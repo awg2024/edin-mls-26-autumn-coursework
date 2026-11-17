@@ -24,9 +24,9 @@ import subprocess
 import sys
 
 ROOT = Path.cwd()
-SOURCE = ROOT / 'csrc' / 'task1_rope.cu' # source for run 
+SOURCE = ROOT / 'csrc' / 'task1_rope.cu'
 PATTERN = re.compile(rb'(constexpr\s+int\s+ROPE_THREADS\s*=\s*)\d+(\s*;)')
-CASES = ('tiny', 'odd sizes', 'audio encoder', 'text decoder') # different experimnets flags we are going to pass into this script recursively 
+CASES = ('tiny', 'odd sizes', 'audio encoder', 'text decoder')
 
 def run(cmd, log_file):
     with log_file.open('w') as f:
@@ -55,14 +55,14 @@ def parse_rows(output, threads, mode, gpu, trial):
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument('--trials',type=int,default=3)
-    ap.add_argument('--sizes',type=int,nargs='+',default=[32,64,128,256,512,1024]) # differnet flags we are passing into the script for cuda block sizes 
-    ap.add_argument('--skip-fast-math',action='store_true') # --use fast maths nvidia operation expected to dramatically speed up. 
+    ap.add_argument('--sizes',type=int,nargs='+',default=[32,64,128,256,512,1024])
+    ap.add_argument('--skip-fast-math',action='store_true')
     args=ap.parse_args()
     if not SOURCE.exists():
-        sys.exit('Run from hw1-asr (missing csrc/task1_rope.cu)') # run check that this is actually a file we caun run in parallel 
+        sys.exit('Run from hw1-asr (missing csrc/task1_rope.cu)')
         
     if args.trials<1 or any(n<32 or n>1024 or n%32 for n in args.sizes):
-        sys.exit('Need trials >= 1 and block sizes that are warp multiples from 32 to 1024') # ensure the warp sizes can contain the threads? 
+        sys.exit('Need trials >= 1 and block sizes that are warp multiples from 32 to 1024')
 
     stamp=dt.datetime.now().strftime('%Y%m%d_%H%M%S')
     out=ROOT / 'experiments' / 'task1' / 'results' / stamp

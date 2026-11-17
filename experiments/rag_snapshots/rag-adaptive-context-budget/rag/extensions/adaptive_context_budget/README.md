@@ -109,8 +109,7 @@ Tests mock ASR and ELM but use the actual existing sentence selectors. They cove
 budget boundaries/formatting, Unicode, duplicates, order, provenance, empty
 contexts, safe truncation, adaptive fallback/ties, unchanged disabled behaviour,
 paired-input identity, supplied evaluator schema, cost matching, coverage, plots
-and API safeguards. Mock results are never answer-quality evidence. This task's
-explicit request authorises local CPU tests; no CUDA tests are run here.
+and API safeguards. Mock results are never answer-quality evidence.
 
 ## Prepare controlled course inputs once
 

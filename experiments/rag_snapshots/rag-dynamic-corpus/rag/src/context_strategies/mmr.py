@@ -1,5 +1,4 @@
 
-# src/context_strategies/mmr.py 
 
 import numpy as np
 from .tfidf import prepare_tfidf
@@ -17,7 +16,7 @@ def select_mmr(query, documents, max_chars=5000, lambda_=0.7):
     if not 0 <= lambda_ <= 1:
         raise ValueError("lambda_ must be between 0 and 1")
     
-    candidates, vectors, relevance = prepare_tfidf(query, documents) # run tfidf to get an embedding and similarity score 
+    candidates, vectors, relevance = prepare_tfidf(query, documents)
 
     if vectors is None:  
         return []
@@ -33,20 +32,20 @@ def select_mmr(query, documents, max_chars=5000, lambda_=0.7):
     # similarity to any already-selected sentence.
     max_redundancy = np.zeros(len(candidates))
 
-    while remaining:  # greedy selection for each group, as long as there are candidate sentneces lfet 
+    while remaining:
         best_index = None
-        best_score = float("-inf") # initialise negative infinity
+        best_score = float("-inf")
 
-        for i in sorted(remaining): # sort in meaningful order 
+        for i in sorted(remaining):
             candidate = candidates[i]
 
-            if not fits_budget(candidate, selected, max_chars): #  check the document fits budget (5k) 
+            if not fits_budget(candidate, selected, max_chars):
                 continue
 
             if not selected: # select the first sentence. we cannot comapre redudancy for this first one since there's nothing to compare against 
                 score = float(relevance[i])
             else:
-                score = (lambda_ * relevance[i] - (1 - lambda_) * max_redundancy[i]) #  score for MMR 
+                score = (lambda_ * relevance[i] - (1 - lambda_) * max_redundancy[i])
 
             if score > best_score: 
                 best_score = float(score)
@@ -65,9 +64,8 @@ def select_mmr(query, documents, max_chars=5000, lambda_=0.7):
         remaining.remove(best_index)
 
         # Compare every candidate with the newly selected sentence.
-        similarities = (vectors @ vectors[best_index].T).toarray().ravel() #  sparse flatten vector for each similarity 
+        similarities = (vectors @ vectors[best_index].T).toarray().ravel()
 
-        # compares the two arrays element by element and keeps whichever value is larger for each sentnece. 
         max_redundancy = np.maximum(max_redundancy, similarities)
 
     return selected

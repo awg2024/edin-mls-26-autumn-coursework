@@ -10,7 +10,7 @@ class LocalEncoder:
 
         kwargs = {}
         if device is not None:
-            kwargs["device"] = device # determines whether this is running on GPU or CPU
+            kwargs["device"] = device
 
         self.model = SentenceTransformer(
             str(model_dir),
@@ -18,7 +18,7 @@ class LocalEncoder:
             **kwargs,
         )
 
-    def encode(self, text: str) -> np.ndarray: # encoding a single query  
+    def encode(self, text: str) -> np.ndarray:
         vec = self.model.encode(
             [text],
             convert_to_numpy=True,
@@ -27,7 +27,7 @@ class LocalEncoder:
         )[0]
         return np.asarray(vec, dtype=np.float32)
 
-    def encode_many(self, texts: list[str], batch_size: int = 64) -> np.ndarray: # intended for encoding multiple deocuments rather than a single query 
+    def encode_many(self, texts: list[str], batch_size: int = 64) -> np.ndarray:
         arr = self.model.encode(
             texts,
             batch_size=batch_size,

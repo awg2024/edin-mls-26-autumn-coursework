@@ -1,7 +1,6 @@
-# sr/context_strategies/tfidf.py  
 
 import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer # import tf-idf vectorisor from sklearn 
+from sklearn.feature_extraction.text import TfidfVectorizer
 from .utils import make_candidates, pack_ranked
 
 
@@ -16,28 +15,26 @@ def prepare_tfidf(query, documents):
         scores: query-to-sentence cosine similarities
     """
 
-    # call util function make canddiates 
     candidates = make_candidates(documents) # Return one candidate for each unique sentence.
 
     if not candidates:
         return candidates, None, np.array([])
 
-    texts = [query] + [item["text"] for item in candidates] # extract out text from retrieve documents 
+    texts = [query] + [item["text"] for item in candidates]
 
-    vectorizer = TfidfVectorizer(stop_words="english", ngram_range=(1, 2), norm="l2") # word level tf-idf vectorisor using bigram & l2 norm
+    vectorizer = TfidfVectorizer(stop_words="english", ngram_range=(1, 2), norm="l2")
 
     try:
-        matrix = vectorizer.fit_transform(texts)   # fit vectorisor to the text
+        matrix = vectorizer.fit_transform(texts)
     except ValueError as exc:
-        if "empty vocabulary" not in str(exc):   # handle empty input cases 
+        if "empty vocabulary" not in str(exc):
             raise
         return candidates, None, np.zeros(len(candidates))
 
-    # construct tf-idf matrix 
     query_vector = matrix[0:1] # Row 0 contains the query vector.
     sentence_vectors = matrix[1:] # All remaining rows contain sentence vectors.
 
-    scores = (sentence_vectors @ query_vector.T).toarray().ravel() # Similarity score per setence sequence 
+    scores = (sentence_vectors @ query_vector.T).toarray().ravel()
     return candidates, sentence_vectors, scores
 
 
@@ -46,7 +43,6 @@ def select_tfidf(query, documents, max_chars=5000):
 
     candidates, _, scores = prepare_tfidf(query, documents)
 
-    # Sort from highest similarity to lowest.
     ranked_indices = np.argsort(-scores, kind="stable")
 
     # Discard sentences with no lexical overlap (limitation talked about in the PR)

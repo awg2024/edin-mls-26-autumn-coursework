@@ -1,6 +1,4 @@
 
-# /src/context_strategies/utils.py 
-# shared utility functions for all context strategies 
 
 import re
 
@@ -41,7 +39,7 @@ def format_evidence(item):
 
 def fits_budget(item, selected, max_chars):
     """Check evidence size, including source labels."""
-    extra = len(format_evidence(item))  #  returns document record id and then text. 
+    extra = len(format_evidence(item))
 
     if selected:
         extra += 2  # The two newline separators.

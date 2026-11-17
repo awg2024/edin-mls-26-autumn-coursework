@@ -1,5 +1,3 @@
-# /src/reranker.py 
-# reranking script 
 import numpy as np
 
 class CrossEncoderReranker:
@@ -9,9 +7,9 @@ class CrossEncoderReranker:
 
     def __init__(
         self,
-        model_path, # dict containing the pretrained cross-encoder model
-        device="cpu", # run the model on CPU unless other device is specified (H200?)
-        batch_size=8, # process up to eight query-document pairs together
+        model_path,
+        device="cpu",
+        batch_size=8,
         max_length=512): # maximum tokenised input sequence lenght , limitation of this reranking process 
         
         from sentence_transformers import CrossEncoder
@@ -47,15 +45,12 @@ class CrossEncoderReranker:
         if not ids:
             return {"record_ids": [], "scores": [], "dense_scores": []}
 
-        # Create a query-document pair for each candidate.
         pairs = [(query, data.record_text(rid)) for rid in ids]
 
-        # Run the cross-encoder on all candidate pairs.
         scores = np.asarray(
             self.model.predict(pairs, batch_size=self.batch_size, show_progress_bar=False),
             dtype=np.float32).reshape(-1)
 
-        # Sort candidate indices by descending reranker score.
         order = np.argsort(-scores, kind="stable")[:final_k]
 
         return {
