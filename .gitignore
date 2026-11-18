@@ -32,3 +32,6 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+# Cross-encoder reranking model 
+/rag/models/cross_encoder/
